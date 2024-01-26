@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// sample.t
+// agendaTest.t
 // Version 1.0
 // Copyright 2022 Diegesis & Mimesis
 //
@@ -8,7 +8,7 @@
 //
 // It can be compiled via the included makefile with
 //
-//	# t3make -f makefile.t3m
+//	# t3make -f agendaTest.t3m
 //
 // ...or the equivalent, depending on what TADS development environment
 // you're using.
@@ -40,6 +40,21 @@ versionInfo: GameID
 	}
 ;
 
+gameMain: GameMainDef
+	initialPlayerChar = me
+
+	inlineCommand(cmd) { "<b>&gt;<<toString(cmd).toUpper()>></b>"; }
+	printCommand(cmd) { "<.p>\n\t<<inlineCommand(cmd)>><.p> "; }
+
+	showIntro() {
+		"This demo provides a <<inlineCommand('foozle')>>
+		command that triggers a few agendas.  A couple turns after
+		using it, Alice should arrive in the starting room and
+		examine and then take the pebble. ";
+		"<.p> ";
+	}
+;
+
 startRoom: Room 'Void'
 	"This is a featureless void. "
 	north = middleRoom
@@ -61,19 +76,21 @@ northRoom: Room 'North Room'
 	"She looks like the first person you'd turn to in a problem. "
 	isHer = true
 	isProperName = true
+	useTargetEngine = true
 ;
-++aliceMove: Move;
-++aliceObserve: Observe;
-++aliceObtain: Obtain;
-
-gameMain: GameMainDef initialPlayerChar = me;
+//++aliceMove: Move;
+//++aliceObserve: Observe;
+//++aliceObtain: Obtain;
 
 DefineSystemAction(Foozle)
 	execSystemAction() {
-		"Foozled.\n ";
-		aliceMove.setTarget(startRoom);
-		aliceObtain.setTarget(pebble);
-		aliceObserve.setTarget(pebble);
+		//aliceMove.addTarget(startRoom);
+		//aliceObserve.addTarget(pebble);
+		//aliceObtain.addTarget(pebble);
+		alice.moveTo(startRoom);
+		alice.obtain(pebble);
+		alice.observe(pebble);
+		"Agendas started.\n ";
 	}
 ;
 VerbRule(Foozle) 'foozle': FoozleAction VerbPhrase = 'foozle/foozling';
