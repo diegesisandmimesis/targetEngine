@@ -21,10 +21,14 @@ class TargetEngineTarget: TargetEngineObject
 
 	construct(t?, fn?) {
 		if(t) target = t;
+
+		// If we were passed a callback, set it as a method on
+		// ourselves.
 		if(dataTypeXlat(fn) != TypeNil)
 			setMethod(&cb, fn);
 	}
 
+	// If we have a callback, call it.
 	callback([args]) {
 		if(propType(&cb) == TypeNil) return;
 		(cb)(args...);

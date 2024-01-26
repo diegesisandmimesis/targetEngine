@@ -29,11 +29,11 @@ class Obtain: TargetEngineAgendaItem
 
 		if(a.canTouch(t.target)) {
 			if(execCommandAs(a, 'take <<t.target.name>>')) {
-				clearTarget(t);
+				clearTarget(t, true);
 				if(targetCount() == 0)
 					success();
 			} else {
-				failure();
+				clearTarget(t, nil);
 			}
 		}
 	}

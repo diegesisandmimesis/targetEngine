@@ -80,21 +80,33 @@ northRoom: Room 'North Room'
 	// This tells the module to add a TargetEngine to alice.
 	useTargetEngine = true
 
-	moveCallback(success) {
-		"\^<<name>> arrives and says nothing.\n ";
+	_success(v) { return(v ? 'success' : 'failed'); }
+	moveCallback(rm, success) {
+		"\^<<name>> moveCallback(). <<_success(success)>>:
+			<<toString(rm ? rm.name : nil)>>\n ";
+	}
+
+	obtainCallback(obj, success) {
+		"\^<<name>> obtainCallback(). <<_success(success)>>:
+			<<toString(obj ? obj.name : nil)>>\n ";
+	}
+
+	observeCallback(obj, success) {
+		"\^<<name>> observeCallback(). <<_success(success)>>:
+			<<toString(obj ? obj.name : nil)>>\n ";
 	}
 ;
 
 DefineSystemAction(Foozle)
 	execSystemAction() {
 		// Now Alice wants to move to the startRoom.
-		alice.moveTo(startRoom, bind(&moveCallback, alice));
+		alice.moveTo(startRoom, bind(&moveCallback, alice, startRoom));
 
 		// Now alice wants to obtain the pebble.
-		alice.obtain(pebble);
+		alice.obtain(pebble, bind(&obtainCallback, alice, pebble));
 
 		// Now alice wants to examine the pebble.
-		alice.observe(pebble);
+		alice.observe(pebble, bind(&observeCallback, alice, pebble));
 
 		defaultReport('Agendas started. ');
 	}

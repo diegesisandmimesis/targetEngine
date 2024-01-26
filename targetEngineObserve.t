@@ -23,7 +23,7 @@ class Observe: TargetEngineAgendaItem
 			return;
 
 		if(execCommandAs(getActor(), 'x <<t.target.name>>')) {
-			clearTarget(t);
+			clearTarget(t, true);
 			if(targetCount() == 0) {
 				success();
 			}
