@@ -46,16 +46,13 @@ modify Actor
 		targetEngine.initializeTargetEngineAgendas();
 	}
 
-	// Convenience wrapper methods for seek engine stuff.
-	moveTo(v, cb?) { return(targetEngine ? targetEngine.moveTo(v, cb?) : nil); }
+	moveTo(v, cb?) {
+		return(targetEngine ? targetEngine.moveTo(v, cb) : nil);
+	}
 	observe(v, cb?) {
-		return(targetEngine ? targetEngine.observe(v, cb?) : nil);
+		return(targetEngine ? targetEngine.observe(v, cb) : nil);
 	}
-	obtain(v, cb?) { return(targetEngine ? targetEngine.obtain(v, cb?) : nil); }
-/*
-	executeAgenda() {
-		inherited();
-		aioSay('\nexecuteAgenda\n ');
+	obtain(v, cb?) {
+		return(targetEngine ? targetEngine.obtain(v, cb) : nil);
 	}
-*/
 ;
