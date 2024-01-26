@@ -2,6 +2,8 @@
 //
 // targetEngineMove.t
 //
+//	Agenda that takes care of moving to a requested location.
+//
 #include <adv3.h>
 #include <en_us.h>
 
@@ -16,19 +18,34 @@ class Move: TargetEngineAgendaItem
 
 	// Computed path
 	path = nil
+
 	// Number of times to retry path computation
 	pathfindingRetries = 3
 
-	invokeItem() {
+	// See if we've arrived at one of our targets.
+	checkLocation() {
 		local t;
 
+		// If we're at a location, clear it.
 		if((t = getTargetAtLocation()) != nil)
 			clearTarget(t, true);
 
+		// If we have no other targets, we're done.  Success.
 		if(noTargets()) {
 			success();
-			return;
+			return(true);
 		}
+
+		return(nil);
+	}
+
+	// Called every turn as part of adv3's agenda logic.
+	invokeItem() {
+		// Make sure we still have targets.  This SHOULD never
+		// succeed, because isReady() should fail if we're already
+		// out of targets.
+		if(checkLocation())
+			return;
 
 		// Figure out what the next step is.
 		if(computeMove() != true) {
@@ -43,6 +60,7 @@ class Move: TargetEngineAgendaItem
 		}
 	}
 
+	// Make sure we have a next move.
 	computeMove() {
 		if(pathfinding() != true) {
 			_debug('makeMove():  pathfinding failed');
@@ -108,41 +126,45 @@ class Move: TargetEngineAgendaItem
 		return(true);
 	}
 
+	// Actually try to take the next step in our computed path.
 	tryMove() {
-		local a, rm0, rm1, t;
+		local a;
 
+		// The path should contain at least the actor's current
+		// location and the target, so if we don't have a path
+		// with at least two elements we're borked.
 		if((path == nil) || (path.length < 2)) {
 			_debug('tryMove():  invalid path');
 			return(nil);
 		}
 
 		a = getActor();
-		rm0 = path[1];
-		rm1 = path[2];
 
-		if((dir = nextMove(a, rm0, rm1)) == nil) {
+		// Figure out what direction the next step is in.
+		if((dir = nextMove(a, path[1], path[2])) == nil) {
 			_debug('tryMove():  unable to compute move direction');
 			return(nil);
 		}
 
+		// Try to take the computed move.
 		if(execCommandAs(a, dir.name) == nil) {
 			_debug('tryMove():  movement command failed');
 			return(nil);
 		}
 
+		// Remove the old current location from the path.
+		// If the remaining path has less than two elements,
+		// we've reached the target.
 		path = path.removeElementAt(1);
 		if(path.length < 2) {
-			if((t = getTargetAtLocation()) != nil) {
-				clearTarget(t, true);
-			}
-			if(noTargets()) {
-				success();
-			}
+			checkLocation();
 		}
 
 		return(true);
 	}
 
+	// Returns the direction actor needs to move in order to get
+	// from src to dst.
 	nextMove(actor, src, dst) {
 		return(Direction.allDirections.valWhich(function(d) {
 			local conn;
