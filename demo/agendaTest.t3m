@@ -3,7 +3,7 @@
 -Fy obj -Fo obj
 -Fs /usr/local/share/frobtads/tads3/lib/extensions
 -Fs ../..
--o games/game.t3
+-o games/agendaTest.t3
 -lib system
 -lib adv3/adv3
 -lib syslog/syslog
@@ -13,5 +13,5 @@
 -lib thirdPersonAction/thirdPersonAction
 -lib execCommandAs/execCommandAs
 -lib ../targetEngine
--source src/sample.t
+-source src/agendaTest.t
 -source pathfind.t
