@@ -12,6 +12,7 @@
 -lib moreFailureReports/moreFailureReports
 -lib thirdPersonAction/thirdPersonAction
 -lib execCommandAs/execCommandAs
+-lib bind/bind
 -lib ../targetEngine
 -source src/sample.t
 -source pathfind.t

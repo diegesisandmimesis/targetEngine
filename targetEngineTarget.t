@@ -15,12 +15,18 @@ class TargetEngineTarget: TargetEngineObject
 	target = nil
 
 	// A callback function to invoke when the target is "done".
-	callback = nil
+	cb = nil
 
 	targetEngine = nil
 
-	construct(t?, cb?) {
+	construct(t?, fn?) {
 		if(t) target = t;
-		if(cb) callback = cb;
+		if(dataTypeXlat(fn) != TypeNil)
+			setMethod(&cb, fn);
+	}
+
+	callback([args]) {
+		if(propType(&cb) == TypeNil) return;
+		(cb)(args...);
 	}
 ;

@@ -22,9 +22,8 @@ class Move: TargetEngineAgendaItem
 	invokeItem() {
 		local t;
 
-		// If we're at the destination, we're done.  Success.
 		if((t = getTargetAtLocation()) != nil)
-			clearTarget(t);
+			clearTarget(t, true);
 
 		if(noTargets()) {
 			success();
@@ -110,7 +109,7 @@ class Move: TargetEngineAgendaItem
 	}
 
 	tryMove() {
-		local a, r, rm0, rm1;
+		local a, rm0, rm1, t;
 
 		if((path == nil) || (path.length < 2)) {
 			_debug('tryMove():  invalid path');
@@ -126,13 +125,20 @@ class Move: TargetEngineAgendaItem
 			return(nil);
 		}
 
-		if((r = execCommandAs(a, dir.name)) == nil) {
+		if(execCommandAs(a, dir.name) == nil) {
 			_debug('tryMove():  movement command failed');
-			if(r) {}
 			return(nil);
 		}
 
 		path = path.removeElementAt(1);
+		if(path.length < 2) {
+			if((t = getTargetAtLocation()) != nil) {
+				clearTarget(t, true);
+			}
+			if(noTargets()) {
+				success();
+			}
+		}
 
 		return(true);
 	}

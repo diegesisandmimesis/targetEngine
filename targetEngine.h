@@ -3,7 +3,7 @@
 //
 
 // Uncomment to enable debugging options.
-//#define __DEBUG_SEEK_ENGINE
+//#define __DEBUG_TARGET_ENGINE
 
 #include "syslog.h"
 #ifndef SYSLOG_H
@@ -41,4 +41,13 @@
 #error "execCommandAs should be in /home/user/tads/execCommandAs ."
 #endif // EXEC_COMMAND_AS_H
 
-#define SEEK_ENGINE_H
+#include "bind.h"
+#ifndef BIND_H
+#error "This module requires the bind module."
+#error "https://github.com/diegesisandmimesis/bind"
+#error "It should be in the same parent directory as this module.  So if"
+#error "targetEngine is in /home/user/tads/targetEngine, then"
+#error "bind should be in /home/user/tads/bind ."
+#endif // BIND_H
+
+#define TARGET_ENGINE_H

@@ -11,6 +11,8 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 	// TargetEngine agendas are all in the range 101-199, with the intention
 	// that they'll always "defer" to non-TargetEngine agendas.
 	agendaOrder = 101
+
+	// All our agends are active by default.
 	initiallyActive = true
 
 	// A list of objectives.  Elements are instances of TargetEngineTarget.
@@ -20,8 +22,11 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 	// a complete config.
 	isReady = (configReady() == true)
 
+	// A complete config consists of something to seek and an actor
+	// to do the seeking.
+	configReady = ((getActor() != nil) && (targetCount() > 0))
+
 	// Add a target to the list.
-	addTarget(v) { return(setTarget(v)); }
 	setTarget(v) {
 		if((v == nil) || !v.ofKind(TargetEngineTarget))
 			return(nil);
@@ -33,6 +38,9 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 
 		return(true);
 	}
+
+	// Synonym for setTarget()
+	addTarget(v) { return(setTarget(v)); }
 
 	// Get a target by index.  If the arg is nil, returns the last
 	// target.
@@ -49,12 +57,16 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		return(targetList[idx]);
 	}
 
-	// Checks on the number of targets in the list.
+	// Returns the current number of targets.
 	targetCount = (targetList ? targetList.length : 0)
+
+	// Returns boolean true if there are no current targets.
 	noTargets = (targetCount() == 0)
 
-	// Returns true if the actor is at the target.
+	// Returns true if the actor is at a target.
 	atTarget = (getTargetAtLocation() != nil)
+
+	// Returns the first target at the actor's location.
 	getTargetAtLocation() {
 		local a;
 
@@ -62,9 +74,13 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 			return(nil);
 
 		return(targetList.valWhich(function(o) {
-			return(o.target && (o.target.location == a.location));
+			return(o.target && ((o.target.location == a.location)
+				|| (o.target == a.location))
+			);
 		}));
 	}
+
+	// Returns a vector of all targets at the actor's location.
 	getTargetsAtLocation() {
 		local a, r;
 
@@ -73,27 +89,25 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 
 		r = new Vector();
 		targetList.forEach(function(o) {
-			if(o.target && (o.target.location == a.location))
+			if(o.target && ((o.target.location == a.location)
+				|| (o.target == a.location))) {
 				r.append(o);
+			}
 		});
 
 		return(r);
 	}
 
-	// A complete config consists of something to seek and an actor
-	// to do the seeking.
-	configReady = ((getActor() != nil) && (targetCount() > 0))
-
 	// Clear the config.  We don't clear the actor because it's the
 	// one that owns the agenda.
 	clearConfig() { targetList.setLength(0); }
-	clearTarget(v, cb?) {
+
+	// Clear a specific target.
+	clearTarget(v, [args]) {
+		v.callback(args...);
 		targetList.removeElement(v);
-		if(cb != true)
-			return;
-		v.callback();
 	}
-	removeTarget(v, cb?) { clearTarget(v, cb); }
+	removeTarget(v, [args]) { clearTarget(v, args...); }
 
 	// Generic success method.
 	success() {

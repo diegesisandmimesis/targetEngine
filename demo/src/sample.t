@@ -76,21 +76,27 @@ northRoom: Room 'North Room'
 	"She looks like the first person you'd turn to in a problem. "
 	isHer = true
 	isProperName = true
+
+	// This tells the module to add a TargetEngine to alice.
 	useTargetEngine = true
+
+	moveCallback(success) {
+		"\^<<name>> arrives and says nothing.\n ";
+	}
 ;
-//++aliceMove: Move;
-//++aliceObserve: Observe;
-//++aliceObtain: Obtain;
 
 DefineSystemAction(Foozle)
 	execSystemAction() {
-		//aliceMove.addTarget(startRoom);
-		//aliceObserve.addTarget(pebble);
-		//aliceObtain.addTarget(pebble);
-		alice.moveTo(startRoom);
+		// Now Alice wants to move to the startRoom.
+		alice.moveTo(startRoom, bind(&moveCallback, alice));
+
+		// Now alice wants to obtain the pebble.
 		alice.obtain(pebble);
+
+		// Now alice wants to examine the pebble.
 		alice.observe(pebble);
-		"Agendas started.\n ";
+
+		defaultReport('Agendas started. ');
 	}
 ;
 VerbRule(Foozle) 'foozle': FoozleAction VerbPhrase = 'foozle/foozling';
