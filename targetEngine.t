@@ -32,6 +32,14 @@
 //		// Tells alice to >EXAMINE the warningSign
 //		alice.observe(warningSign);
 //
+//	Each of these methods can take a callback function as the optional
+//	second argument.  When a target is completed the callback will
+//	be called with a single argument, boolean true on success and
+//	nil on failure.
+//
+//
+// NOTES
+//
 //	Note that obtain() and observe() won't tell the actor to move to
 //	the given object.  The actor will simply take or examine the requested
 //	object if it's already present.
