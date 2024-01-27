@@ -80,20 +80,26 @@ northRoom: Room 'North Room'
 	// This tells the module to add a TargetEngine to alice.
 	useTargetEngine = true
 
-	_success(v) { return(v ? 'success' : 'failed'); }
-	moveCallback(rm, success) {
-		"\^<<name>> moveCallback(). <<_success(success)>>:
-			<<toString(rm ? rm.name : nil)>>\n ";
+	_status(v) { return('status:  ' + (v ? 'success' : 'failed')); }
+	_label(v) { return('target:  ' + (v ? v.name : 'unknown')); }
+	_results(lbl, obj, results) {
+		"\n\^<<name>> <<lbl>>:\n\t<<_status(results)>>
+			\n\t<<_label(obj)>>\n ";
 	}
-
-	obtainCallback(obj, success) {
-		"\^<<name>> obtainCallback(). <<_success(success)>>:
-			<<toString(obj ? obj.name : nil)>>\n ";
-	}
-
-	observeCallback(obj, success) {
-		"\^<<name>> observeCallback(). <<_success(success)>>:
-			<<toString(obj ? obj.name : nil)>>\n ";
+	moveCallback(rm, success) { _results('moveTo()', rm, success); }
+	obtainCallback(obj, success) { _results('obtain()', obj, success); }
+	observeCallback(obj, success) { _results('observe()', obj, success); }
+;
+// A very low-priority agenda.
+// It being executed just demonstrates that none of the higher-priority
+// agendas are still active.  It should also fire the turn after the pebble
+// is obtained if Alice's nextRunTime hasn't been messed with.
+++AgendaItem
+	agendaOrder = 999
+	initiallyActive = true
+	isReady = true
+	invokeItem() {
+		"Alice idles. ";
 	}
 ;
 
