@@ -2,6 +2,53 @@
 //
 // targetEngine.t
 //
+//	A TADS3/adv3 module providing low-level NPC target-seeking
+//	behaviors.
+//
+//
+// USAGE:
+//
+//	In order to use the target engine logic, an actor first has to
+//	have useTargetEngine = true set:
+//
+//		alice: Person 'Alice' 'Alice'
+//			"She looks like the first person you'd turn to
+//			in a problem. "
+//			isHer = true
+//			isProperName = true
+//
+//			useTargetEngine = true
+//		;
+//
+//	An actor using a target engine can be directed to move to, observe,
+//	or attempt to take a Thing:
+//
+//		// Tells alice to move to the location startRoom.
+//		alice.moveTo(startRoom);
+//
+//		// Tells alice to >TAKE the pebble.
+//		alice.obtain(pebble);
+//
+//		// Tells alice to >EXAMINE the warningSign
+//		alice.observe(warningSign);
+//
+//	Note that obtain() and observe() won't tell the actor to move to
+//	the given object.  The actor will simply take or examine the requested
+//	object if it's already present.
+//
+//	So in the example above, for example, Alice will begin moving
+//	toward the startRoom location and will take the pebble or examine
+//	the sign if she encounters them in her current location, in the
+//	destination location, or anywhere along the path.
+//
+//	By default each target is cleared on either success or failure.
+//	Success means reaching the moveTo() location, taking the
+//	obtain() object, or examining the observe() object.  Failure means
+//	the agenda determines success is impossible:  no path exists
+//	to a moveTo() target, >TAKE fails on the obtain() target, and
+//	so on.
+//
+//
 #include <adv3.h>
 #include <en_us.h>
 

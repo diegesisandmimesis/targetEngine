@@ -9,4 +9,9 @@
 
 targetEnginePathfinder: roomPathFinder
 	includeRoom(loc) { return(true); }
+/*
+	includeRoom(loc) {
+		return(actor_.knowsAbout(loc));
+	}
+*/
 ;
