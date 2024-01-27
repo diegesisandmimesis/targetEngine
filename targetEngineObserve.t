@@ -16,19 +16,17 @@ class Observe: TargetEngineAgendaItem
 
 	isReady = ((configReady() == true) && (atTarget() == true))
 
-	invokeItem() {
+	takeAction() {
 		local t;
 
 		if(((t = getTargetAtLocation()) == nil) || (t.target == nil))
 			return;
 
 		if(execCommandAs(getActor(), 'x <<t.target.name>>')) {
-			clearTarget(t, true);
-			if(targetCount() == 0) {
-				success();
-			}
+			targetSuccess(t);
 		} else {
-			failure();
+			targetFailure(t);
 		}
+		checkProgress();
 	}
 ;

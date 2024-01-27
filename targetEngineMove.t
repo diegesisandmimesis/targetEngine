@@ -22,40 +22,33 @@ class Move: TargetEngineAgendaItem
 	// Number of times to retry path computation
 	pathfindingRetries = 3
 
-	// See if we've arrived at one of our targets.
-	checkLocation() {
+	// At any given point we're trying to move to only one target, even
+	// if we have more.  This is the one we're currently moving toward.
+	moveTarget = nil
+
+	checkTargets() {
 		local t;
 
-		// If we're at a location, clear it.
 		if((t = getTargetAtLocation()) != nil)
-			clearTarget(t, true);
-
-		// If we have no other targets, we're done.  Success.
-		if(noTargets()) {
-			success();
-			return(true);
-		}
-
-		return(nil);
+			targetSuccess(t);
 	}
 
 	// Called every turn as part of adv3's agenda logic.
-	invokeItem() {
-		// Make sure we still have targets.  This SHOULD never
-		// succeed, because isReady() should fail if we're already
-		// out of targets.
-		if(checkLocation())
-			return;
+	takeAction() {
+		if(moveTarget == nil)
+			moveTarget = getTarget(1);
 
 		// Figure out what the next step is.
 		if(computeMove() != true) {
-			failure();
+			targetFailed(moveTarget);
+			moveTarget = nil;
 			return;
 		}
 
 		// Try to take the next step.
 		if(tryMove() != true) {
-			failure();
+			targetFailed(moveTarget);
+			moveTarget = nil;
 			return;
 		}
 	}
@@ -77,7 +70,7 @@ class Move: TargetEngineAgendaItem
 
 	// Compute the path to the target.
 	pathfinding(force?) {
-		local a, t;
+		local a;
 
 		// We don't recompute if we already have a path, unless
 		// the force argument is boolean true.
@@ -86,10 +79,10 @@ class Move: TargetEngineAgendaItem
 
 		// Use our pathfinder to get the path.
 		a = getActor();
-		if(((t = getTarget(1)) == nil) || (t.target == nil))
+		if((moveTarget == nil) || (moveTarget.target == nil))
 			return(nil);
 		path = targetEnginePathfinder.findPath(a, a.location,
-			t.target);
+			moveTarget.target);
 
 		// Should never happen.
 		if(path == nil)
@@ -156,9 +149,8 @@ class Move: TargetEngineAgendaItem
 		// If the remaining path has less than two elements,
 		// we've reached the target.
 		path = path.removeElementAt(1);
-		if(path.length < 2) {
-			checkLocation();
-		}
+		if(path.length < 2)
+			return(checkProgress());
 
 		return(true);
 	}

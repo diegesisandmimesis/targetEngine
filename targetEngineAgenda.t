@@ -109,13 +109,30 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 	}
 	removeTarget(v, [args]) { clearTarget(v, args...); }
 
-	// Generic success method.
-	success() {
-		clearConfig();
+	targetSuccess(v) { clearTarget(v, true); }
+	targetFailure(v) { clearTarget(v, nil); }
+	targetFailed(v) { targetFailure(v); }
+
+	invokeItem() {
+		if(checkProgress())
+			return;
+		takeAction();
 	}
 
-	// Generic failure method.
-	failure() {
+	// Stub method.  Subclasses should check the given target
+	// and clear it if it's succeeded or failed.
+	checkTarget(t) {}
+	checkTargets() {}
+
+	// Check to see if we're out of targets.
+	checkProgress() {
+		checkTargets();
+
+		if(targetCount() != 0)
+			return(nil);
+
 		clearConfig();
+
+		return(true);
 	}
 ;

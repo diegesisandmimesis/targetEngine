@@ -16,7 +16,7 @@ class Obtain: TargetEngineAgendaItem
 
 	isReady = ((configReady() == true) && (atTarget() == true))
 
-	invokeItem() {
+	takeAction() {
 		takeTarget();
 	}
 
@@ -28,13 +28,11 @@ class Obtain: TargetEngineAgendaItem
 			return;
 
 		if(a.canTouch(t.target)) {
-			if(execCommandAs(a, 'take <<t.target.name>>')) {
-				clearTarget(t, true);
-				if(targetCount() == 0)
-					success();
-			} else {
-				clearTarget(t, nil);
-			}
+			if(execCommandAs(a, 'take <<t.target.name>>'))
+				targetSuccess(t);
+			else
+				targetFailure(t);
 		}
+		checkProgress();
 	}
 ;
