@@ -9,14 +9,14 @@
 #include "targetEngine.h"
 
 class RandomWalk: TargetEngineAgendaItem
-	syslogID = 'Search'
+	syslogID = 'RandomWalk'
 
 	// TargetEngine agendas are in the range 101-199.  We're here
 	// to allow observation and scavenging to happen before movement.
 	agendaOrder = 199
 
 	currentTarget = nil
-	currentTargetCounter = 0
+	randomWalkTimer = 0
 
 	atTarget = nil
 	getTargetAtLocation = nil
@@ -25,10 +25,10 @@ class RandomWalk: TargetEngineAgendaItem
 	checkTargets() {
 		if((currentTarget == nil) || (currentTarget.target == nil))
 			return;
-		if(currentTargetCounter >= currentTarget.target) {
+		if(randomWalkTimer >= currentTarget.target) {
 			clearTarget(currentTarget);
 			currentTarget = nil;
-			currentTargetCounter = 0;
+			randomWalkTimer = 0;
 			return;
 		}
 	}
@@ -37,9 +37,9 @@ class RandomWalk: TargetEngineAgendaItem
 		if(currentTarget.target == nil )
 			return;
 
-		currentTargetCounter += 1;
-		_debug('currentTargetCount =
-			<<toString(currentTargetCounter)>>');
+		randomWalkTimer += 1;
+		_debug('randomWalkTimer = <<toString(randomWalkTimer)>>
+			of <<toString(currentTarget.target)>>');
 
 	}
 
@@ -48,7 +48,7 @@ class RandomWalk: TargetEngineAgendaItem
 
 		if(currentTarget == nil) {
 			currentTarget = getTarget(1);
-			currentTargetCounter = 0;
+			randomWalkTimer = 0;
 		}
 
 		incrementRandomWalkCounter();
