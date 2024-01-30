@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// sample.t
+// randomWalkTest.t
 // Version 1.0
 // Copyright 2022 Diegesis & Mimesis
 //
@@ -8,7 +8,7 @@
 //
 // It can be compiled via the included makefile with
 //
-//	# t3make -f makefile.t3m
+//	# t3make -f randomWalkTest.t3m
 //
 // ...or the equivalent, depending on what TADS development environment
 // you're using.
@@ -48,29 +48,33 @@ gameMain: GameMainDef
 
 	showIntro() {
 		"This demo provides a <<inlineCommand('foozle')>>
-		command that triggers a few agendas.  A couple turns after
-		using it, Alice should arrive in the starting room and
-		examine and then take the pebble. ";
-		"<.p> ";
+		command that triggers Alice's randomWalk agenda.
+		<.p>
+		The world is a 10x10 random map with two extra rooms,
+		one in the southwest for the player and one in the northeast
+		for Alice.
+		<.p>
+		The makefile for this demo uses -D SYSLOG to output
+		logging information, so the player can see Alice's
+		movements.
+		<.p> ";
 	}
 ;
 
-startRoom: Room 'Void'
-	"This is a featureless void. "
-	north = middleRoom
+map: SimpleRandomMapGenerator
+	movePlayer = nil
+	beforeFirst = startRoom
+	afterLast = aliceRoom
+;
+
+startRoom: Room 'Pebble Room'
+	"This is the starting room for the pebble. "
 ;
 +me: Person;
 +pebble: Thing 'small round pebble' 'pebble' "A small, round pebble. ";
 
-middleRoom: Room 'Middle Room'
-	"This is the middle room. "
-	north = northRoom
-	south = startRoom
-;
-
-northRoom: Room 'North Room'
-	"This is the north room. "
-	south = middleRoom
+aliceRoom: Room 'North Room'
+	"This is the starting room for Alice. "
 ;
 +alice: Person 'Alice' 'Alice'
 	"She looks like the first person you'd turn to in a problem. "
@@ -88,9 +92,7 @@ northRoom: Room 'North Room'
 	}
 
 	// Test(s) of the callback mechanism.
-	moveCallback(obj, success) { _results('moveTo()', obj, success); }
-	obtainCallback(obj, success) { _results('obtain()', obj, success); }
-	observeCallback(obj, success) { _results('observe()', obj, success); }
+	searchCallback(obj, success) { _results('search()', obj, success); }
 ;
 // A very low-priority agenda.
 // It being executed just demonstrates that none of the higher-priority
@@ -107,14 +109,8 @@ northRoom: Room 'North Room'
 
 DefineSystemAction(Foozle)
 	execSystemAction() {
-		// Now Alice wants to move to the startRoom.
-		alice.moveTo(startRoom, bind(&moveCallback, alice, startRoom));
-
-		// Now alice wants to obtain the pebble.
-		alice.obtain(pebble, bind(&obtainCallback, alice, pebble));
-
-		// Now alice wants to examine the pebble.
-		alice.observe(pebble, bind(&observeCallback, alice, pebble));
+		alice.randomWalk(3);
+		alice.randomWalk(4);
 
 		defaultReport('Agendas started. ');
 	}

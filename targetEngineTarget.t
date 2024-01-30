@@ -14,6 +14,9 @@ class TargetEngineTarget: TargetEngineObject
 	// whatever.
 	target = nil
 
+	near = nil
+	distance = nil
+
 	// A callback function to invoke when the target is "done".
 	cb = nil
 

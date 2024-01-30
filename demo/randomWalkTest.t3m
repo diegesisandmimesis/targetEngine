@@ -1,0 +1,21 @@
+-D LANGUAGE=en_us
+-D MESSAGESTYLE=neu
+-D SIMPLE_RANDOM_MAP
+-D SYSLOG
+-Fy obj -Fo obj
+-Fs /usr/local/share/frobtads/tads3/lib/extensions
+-Fs ../..
+-o games/randomWalkTest.t3
+-lib system
+-lib adv3/adv3
+-lib syslog/syslog
+-lib outputToggle/outputToggle
+-lib modularExecuteCommand/modularExecuteCommand
+-lib moreFailureReports/moreFailureReports
+-lib thirdPersonAction/thirdPersonAction
+-lib execCommandAs/execCommandAs
+-lib simpleRandomMap/simpleRandomMap
+-lib bind/bind
+-lib ../targetEngine
+-source src/randomWalkTest.t
+-source pathfind.t

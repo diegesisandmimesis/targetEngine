@@ -68,4 +68,8 @@ modify Actor
 	obtain(v, cb?) {
 		return(targetEngine ? targetEngine.obtain(v, cb) : nil);
 	}
+
+	randomWalk(v?, cb?) {
+		return(targetEngine ? targetEngine.randomWalk(v, cb) : nil);
+	}
 ;

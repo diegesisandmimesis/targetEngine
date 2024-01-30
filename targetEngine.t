@@ -86,12 +86,13 @@ class TargetEngine: TargetEngineObject
 	moveAgendaClass = Move
 	observeAgendaClass = Observe
 	obtainAgendaClass = Obtain
+	randomWalkAgendaClass = RandomWalk
 
 	// List of "built-in" agendas.  These provide the basic
 	// functions we use:  moving to a target room, looking at a
 	// target object, and so on.
 	_agendaList = static [ moveAgendaClass, observeAgendaClass,
-		obtainAgendaClass ]
+		obtainAgendaClass, randomWalkAgendaClass ]
 
 	// Called at preinit.
 	initializeTargetEngine() {
@@ -181,4 +182,5 @@ class TargetEngine: TargetEngineObject
 	moveTo(v, cb?) { return(_setTarget(v, cb, moveAgendaClass)); }
 	observe(v, cb?) { return(_setTarget(v, cb, observeAgendaClass)); }
 	obtain(v, cb?) { return(_setTarget(v, cb, obtainAgendaClass)); }
+	randomWalk(v?, cb?) { return(_setTarget(v, cb, randomWalkAgendaClass)); }
 ;
