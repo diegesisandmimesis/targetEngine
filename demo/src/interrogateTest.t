@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// sample.t
+// interrogateTest.t
 // Version 1.0
 // Copyright 2022 Diegesis & Mimesis
 //
@@ -8,7 +8,7 @@
 //
 // It can be compiled via the included makefile with
 //
-//	# t3make -f makefile.t3m
+//	# t3make -f interrogateTest.t3m
 //
 // ...or the equivalent, depending on what TADS development environment
 // you're using.
@@ -48,10 +48,16 @@ gameMain: GameMainDef
 
 	showIntro() {
 		"This demo provides a <<inlineCommand('foozle')>>
-		command that triggers a few agendas.  A couple turns after
-		using it, Alice should arrive in the starting room and
-		examine and then take the pebble. ";
-		"<.p> ";
+		command that triggers Alice's interrogate agenda.
+		<.p>
+		The world is a 10x10 random map with two extra rooms,
+		one in the southwest for the player and one in the northeast
+		for Alice.
+		<.p>
+		The makefile for this demo uses -D SYSLOG to output
+		logging information, so the player can see Alice's
+		movements.
+		<.p> ";
 	}
 ;
 
@@ -60,32 +66,17 @@ modify pebbleRoom north = middleRoom;
 
 modify aliceRoom south = middleRoom;
 
-// Add some callback methods to Alice.  Just to test the callback
-// mechanism.
-modify alice
-	moveCallback(obj, success) { _results('moveTo()', obj, success); }
-	obtainCallback(obj, success) { _results('obtain()', obj, success); }
-	observeCallback(obj, success) { _results('observe()', obj, success); }
-;
-
 modify FoozleAction
 	execSystemAction() {
-		// Now Alice wants to move to the pebbleRoom.
-		alice.moveTo(pebbleRoom, bind(&moveCallback, alice,
-			pebbleRoom));
-
-		// Now alice wants to obtain the pebble.
-		alice.obtain(pebble, bind(&obtainCallback, alice, pebble));
-
-		// Now alice wants to examine the pebble.
-		alice.observe(pebble, bind(&observeCallback, alice, pebble));
+		alice.moveTo(pebbleRoom);
+		alice.interrogate(me);
 
 		defaultReport('Agendas started. ');
 	}
 ;
 /*
-startRoom: Room 'Void'
-	"This is a featureless void. "
+startRoom: Room 'Pebble Room'
+	"This is the starting room for the pebble. "
 	north = middleRoom
 ;
 +me: Person;
@@ -98,7 +89,7 @@ middleRoom: Room 'Middle Room'
 ;
 
 northRoom: Room 'North Room'
-	"This is the north room. "
+	"This is the starting room for Alice. "
 	south = middleRoom
 ;
 +alice: Person 'Alice' 'Alice'
@@ -108,18 +99,6 @@ northRoom: Room 'North Room'
 
 	// This tells the module to add a TargetEngine to alice.
 	useTargetEngine = true
-
-	_status(v) { return('status:  ' + (v ? 'success' : 'failed')); }
-	_label(v) { return('target:  ' + (v ? v.name : 'unknown')); }
-	_results(lbl, obj, results) {
-		"\n\^<<name>> <<lbl>>:\n\t<<_status(results)>>
-			\n\t<<_label(obj)>>\n ";
-	}
-
-	// Test(s) of the callback mechanism.
-	moveCallback(obj, success) { _results('moveTo()', obj, success); }
-	obtainCallback(obj, success) { _results('obtain()', obj, success); }
-	observeCallback(obj, success) { _results('observe()', obj, success); }
 ;
 // A very low-priority agenda.
 // It being executed just demonstrates that none of the higher-priority
@@ -136,14 +115,8 @@ northRoom: Room 'North Room'
 
 DefineSystemAction(Foozle)
 	execSystemAction() {
-		// Now Alice wants to move to the startRoom.
-		alice.moveTo(startRoom, bind(&moveCallback, alice, startRoom));
-
-		// Now alice wants to obtain the pebble.
-		alice.obtain(pebble, bind(&obtainCallback, alice, pebble));
-
-		// Now alice wants to examine the pebble.
-		alice.observe(pebble, bind(&observeCallback, alice, pebble));
+		alice.moveTo(startRoom);
+		alice.interrogate(me);
 
 		defaultReport('Agendas started. ');
 	}

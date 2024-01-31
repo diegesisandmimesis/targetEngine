@@ -63,10 +63,22 @@ gameMain: GameMainDef
 
 map: SimpleRandomMapGenerator
 	movePlayer = nil
-	beforeFirst = startRoom
+	beforeFirst = pebbleRoom
 	afterLast = aliceRoom
 ;
 
+me: Person location = pebbleRoom;
+
+modify FoozleAction
+	execSystemAction() {
+		alice.randomWalk(3);
+		alice.randomWalk(4);
+
+		defaultReport('Agendas started. ');
+	}
+;
+
+/*
 startRoom: Room 'Pebble Room'
 	"This is the starting room for the pebble. "
 ;
@@ -116,4 +128,4 @@ DefineSystemAction(Foozle)
 	}
 ;
 VerbRule(Foozle) 'foozle': FoozleAction VerbPhrase = 'foozle/foozling';
-
+*/

@@ -1,9 +1,10 @@
 -D LANGUAGE=en_us
 -D MESSAGESTYLE=neu
+-D SYSLOG
 -Fy obj -Fo obj
 -Fs /usr/local/share/frobtads/tads3/lib/extensions
 -Fs ../..
--o games/game.t3
+-o games/interrogateTest.t3
 -lib system
 -lib adv3/adv3
 -lib syslog/syslog
@@ -17,5 +18,5 @@
 -source src/demoWorld.t
 -source src/alice.t
 -source src/foozleAction.t
--source src/sample.t
+-source src/interrogateTest.t
 -source pathfind.t

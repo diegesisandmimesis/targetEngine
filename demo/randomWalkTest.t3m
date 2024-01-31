@@ -17,5 +17,8 @@
 -lib simpleRandomMap/simpleRandomMap
 -lib bind/bind
 -lib ../targetEngine
+-source src/demoWorld.t
+-source src/alice.t
+-source src/foozleAction.t
 -source src/randomWalkTest.t
 -source pathfind.t
