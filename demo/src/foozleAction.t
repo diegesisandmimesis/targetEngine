@@ -2,6 +2,8 @@
 //
 // foozleAction.t
 //
+//	Stub version of the demo action.
+//
 #include <adv3.h>
 #include <en_us.h>
 

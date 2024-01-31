@@ -2,6 +2,8 @@
 //
 // demoWorld.t
 //
+//	Rudimentary gameworld used by the three-room demos.
+//
 #include <adv3.h>
 #include <en_us.h>
 
