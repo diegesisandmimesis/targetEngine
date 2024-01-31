@@ -50,13 +50,7 @@ gameMain: GameMainDef
 		"This demo provides a <<inlineCommand('foozle')>>
 		command that triggers Alice's interrogate agenda.
 		<.p>
-		The world is a 10x10 random map with two extra rooms,
-		one in the southwest for the player and one in the northeast
-		for Alice.
-		<.p>
-		The makefile for this demo uses -D SYSLOG to output
-		logging information, so the player can see Alice's
-		movements.
+		It currently doesn't do much of anything.
 		<.p> ";
 	}
 ;
