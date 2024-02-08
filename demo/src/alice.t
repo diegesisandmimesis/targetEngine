@@ -36,3 +36,25 @@ alice: Person 'Alice' 'Alice' @aliceRoom
 		"Alice idles. ";
 	}
 ;
++InConversationState
+	specialDesc = "Alice is here, talking with you. "
+	stateDesc = "She's watching you as you talk. "
+;
+++ConversationReadyState
+	specialDesc = "This is the ConversationReadyState description. "
+	stateDesc = "Alice is in ConversationReadyState. "
+;
++++HelloTopic, StopEventList
+	[
+		'This is the first hello topic.',
+		'This is the second hello topic.',
+		'This is the third hello topic.'
+	]
+;
++++ByeTopic, StopEventList
+	[ 'This is the bye topic.' ]
+;
++++ImpByeTopic, StopEventList
+	[ 'This is the implicit bye topic. ' ]
+;
+	
