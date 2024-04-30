@@ -59,19 +59,30 @@ modify Actor
 	}
 
 	// Convenience methods to add specific kinds of targets.
-	moveTo(v, cb?) {
-		return(targetEngine ? targetEngine.moveTo(v, cb) : nil);
-	}
-	observe(v, cb?) {
-		return(targetEngine ? targetEngine.observe(v, cb) : nil);
-	}
-	obtain(v, cb?) {
-		return(targetEngine ? targetEngine.obtain(v, cb) : nil);
-	}
-	randomWalk(v?, cb?) {
-		return(targetEngine ? targetEngine.randomWalk(v, cb) : nil);
-	}
+	moveTo(v, cb?)
+		{ return(targetEngine ? targetEngine.moveTo(v, cb) : nil); }
+	observe(v, cb?)
+		{ return(targetEngine ? targetEngine.observe(v, cb) : nil); }
+	obtain(v, cb?)
+		{ return(targetEngine ? targetEngine.obtain(v, cb) : nil); }
+	randomWalk(v?, cb?)
+		{ return(targetEngine ? targetEngine.randomWalk(v, cb) : nil); }
 	interrogate(v?, cb?) {
 		return(targetEngine ? targetEngine.interrogate(v, cb) : nil);
+	}
+
+	clearMoveTo(v) {
+		return(targetEngine ? targetEngine.clearMoveTo(v) : nil);
+	}
+	clearObserve(v) {
+		return(targetEngine ? targetEngine.clearObserve(v) : nil);
+	}
+	clearObtain(v) {
+		return(targetEngine ? targetEngine.clearObtain(v) : nil);
+	}
+	clearRandomWalk(v) {
+		return(targetEngine ? targetEngine.clearRandomWalk(v) : nil); }
+	clearInterrogate(v) {
+		return(targetEngine ? targetEngine.clearInterrogate(v) : nil);
 	}
 ;

@@ -42,6 +42,7 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 	// Synonym for setTarget()
 	addTarget(v) { return(setTarget(v)); }
 
+
 	// Get a target by index.  If the arg is nil, returns the last
 	// target.
 	getTarget(idx?) {
@@ -108,6 +109,21 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		targetList.removeElement(v);
 	}
 	removeTarget(v, [args]) { clearTarget(v, args...); }
+
+	clearTargetObj(v) {
+		local b, r;
+
+		if(v == nil)
+			return(nil);
+
+		b = nil;
+		while((r = targetList.valWhich({ x: x.target == v })) != nil) {
+			targetList.removeElement(r);
+			b = true;
+		}
+
+		return(b);
+	}
 
 	targetSuccess(v) { clearTarget(v, true); }
 	targetFailure(v) { clearTarget(v, nil); }

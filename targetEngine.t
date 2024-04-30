@@ -179,6 +179,15 @@ class TargetEngine: TargetEngineObject
 		return(true);
 	}
 
+	_clearTargetObj(v, cls) {
+		local a;
+
+		if((a = _getAgendaMatching(cls)) == nil)
+			return(nil);
+
+		return(a.clearTargetObj(v));
+	}
+
 	// Convenience methods for setting targets on specific types
 	// of agendas.
 	moveTo(v, cb?) { return(_setTarget(v, cb, moveAgendaClass)); }
@@ -188,4 +197,15 @@ class TargetEngine: TargetEngineObject
 		{ return(_setTarget(v, cb, randomWalkAgendaClass)); }
 	interrogate(v?, cb?)
 		{ return(_setTarget(v, cb, interrogateAgendaClass)); }
+
+	clearMoveTo(v)
+		{ return(_clearTargetObj(v, moveAgendaClass)); }
+	clearObserve(v)
+		{ return(_clearTargetObj(v, observeAgendaClass)); }
+	clearObtain(v)
+		{ return(_clearTargetObj(v, obtainAgendaClass)); }
+	clearRandomWalk(v)
+		{ return(_clearTargetObj(v, randomWalkAgendaClass)); }
+	clearInterrogate(v)
+		{ return(_clearTargetObj(v, interrogateAgendaClass)); }
 ;

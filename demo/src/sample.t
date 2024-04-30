@@ -74,11 +74,17 @@ modify FoozleAction
 		alice.moveTo(pebbleRoom, bind(&moveCallback, alice,
 			pebbleRoom));
 
+		// Now alice wants to obtain the rock.
+		alice.obtain(rock, bind(&obtainCallback, alice, rock));
+
 		// Now alice wants to obtain the pebble.
 		alice.obtain(pebble, bind(&obtainCallback, alice, pebble));
 
 		// Now alice wants to examine the pebble.
 		alice.observe(pebble, bind(&observeCallback, alice, pebble));
+
+		// Remove the rock target.
+		alice.clearObtain(rock);
 
 		defaultReport('Agendas started. ');
 	}

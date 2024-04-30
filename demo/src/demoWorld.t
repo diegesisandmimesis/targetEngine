@@ -14,6 +14,7 @@ pebbleRoom: Room 'Pebble Room'
 	north = middleRoom
 ;
 +pebble: Thing 'small round pebble' 'pebble' "A small, round pebble. ";
++rock: Thing '(ordinary) rock' 'rock' "An ordinary rock. ";
 
 middleRoom: Room 'Middle Room'
 	"This is the middle room used in the three-room demos. "
