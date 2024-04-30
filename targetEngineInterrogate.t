@@ -7,6 +7,11 @@
 
 #include "targetEngine.h"
 
+#ifndef THIRD_PERSON_ACTION_TALK_TO
+#error "The Interrogate agenda (in the targetEngine module) requires the"
+#error "game to be compiled with the -D THIRD_PERSON_ACTION_TALK_TO flag."
+#endif // THIRD_PERSON_ACTION_TALK_TO
+
 class Interrogate: TargetEngineAgendaItem
 	syslogID = 'Interrogate'
 

@@ -37,18 +37,24 @@ alice: Person 'Alice' 'Alice' @aliceRoom
 	}
 ;
 +InConversationState
-	specialDesc = "Alice is here, talking with you. "
+	specialDesc = "Alice is here, talking with
+		<<alice.lastInterlocutor.theName>>. "
 	stateDesc = "She's watching you as you talk. "
 ;
 ++ConversationReadyState
+	isInitState = true
 	specialDesc = "This is the ConversationReadyState description. "
 	stateDesc = "Alice is in ConversationReadyState. "
 ;
++++TopicGroupFor @gPlayerChar;
+++++ActorHelloTopic, StopEventList
+	[ 'This is Alice\'s hello topic for the player. ' ]
+;
 +++HelloTopic, StopEventList
 	[
-		'This is the first hello topic.',
-		'This is the second hello topic.',
-		'This is the third hello topic.'
+		'This is the first default hello topic.',
+		'This is the second default hello topic.',
+		'This is the third default hello topic.'
 	]
 ;
 +++ByeTopic, StopEventList
@@ -57,4 +63,3 @@ alice: Person 'Alice' 'Alice' @aliceRoom
 +++ImpByeTopic, StopEventList
 	[ 'This is the implicit bye topic. ' ]
 ;
-	

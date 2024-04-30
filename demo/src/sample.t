@@ -56,7 +56,7 @@ gameMain: GameMainDef
 ;
 
 modify pebbleRoom north = middleRoom;
-+me: Person;
++me: Person 'player' 'player';
 
 modify aliceRoom south = middleRoom;
 

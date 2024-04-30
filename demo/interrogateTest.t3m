@@ -1,6 +1,7 @@
 -D LANGUAGE=en_us
 -D MESSAGESTYLE=neu
 -D SYSLOG
+-D THIRD_PERSON_ACTION_TALK_TO
 -Fy obj -Fo obj
 -Fs /usr/local/share/frobtads/tads3/lib/extensions
 -Fs ../..
