@@ -106,14 +106,15 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 	// Clear a specific target.
 	clearTarget(v, [args]) {
 		v.callback(args...);
-		targetList.removeElement(v);
+		if(targetList != nil)
+			targetList.removeElement(v);
 	}
 	removeTarget(v, [args]) { clearTarget(v, args...); }
 
 	clearTargetObj(v) {
 		local b, r;
 
-		if(v == nil)
+		if((v == nil) || (targetList == nil))
 			return(nil);
 
 		b = nil;
