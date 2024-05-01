@@ -42,6 +42,7 @@ class Move: TargetEngineAgendaItem
 		if(computeMove() != true) {
 			targetFailed(moveTarget);
 			moveTarget = nil;
+			path = nil;
 			return;
 		}
 
@@ -49,6 +50,7 @@ class Move: TargetEngineAgendaItem
 		if(tryMove() != true) {
 			targetFailed(moveTarget);
 			moveTarget = nil;
+			path = nil;
 			return;
 		}
 	}
@@ -149,8 +151,11 @@ class Move: TargetEngineAgendaItem
 		// If the remaining path has less than two elements,
 		// we've reached the target.
 		path = path.removeElementAt(1);
-		if(path.length < 2)
+		if(path.length < 2) {
+			moveTarget = nil;
+			path = nil;
 			return(checkProgress());
+		}
 
 		return(true);
 	}

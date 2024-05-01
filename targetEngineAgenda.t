@@ -34,7 +34,7 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		if(targetList == nil)
 			targetList = new Vector();
 
-		targetList.append(v);
+		targetList.appendUnique(v);
 
 		return(true);
 	}
@@ -92,7 +92,7 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		targetList.forEach(function(o) {
 			if(o.target && ((o.target.location == a.location)
 				|| (o.target == a.location))) {
-				r.append(o);
+				r.appendUnique(o);
 			}
 		});
 
