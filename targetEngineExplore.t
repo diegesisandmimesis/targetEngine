@@ -90,6 +90,8 @@ class Explore: TargetEngineAgendaItem
 	// Remember all the unexplored exits from the current locaiton.
 	updateUnexplored() { _updateUnexplored(getActor().location); }
 
+	// Utility method that returns a list of all exits from the given
+	// room that lead to destinations our actor hasn't seen.
 	_getUnexploredExits(rm) {
 		local a, lst;
 
@@ -110,6 +112,8 @@ class Explore: TargetEngineAgendaItem
 			x: addUnexploredExit(x, rm) });
 	}
 
+	// Go through the stack of unexplored rooms and remove any that
+	// have been visited since being added.
 	verifyUnexplored() {
 		local a;
 
@@ -121,6 +125,19 @@ class Explore: TargetEngineAgendaItem
 			x: !a.hasSeen(x.dstInfo.dest_) });
 	}
 
+	// Attempt to initialize the list of unexplored exits.
+	// By default the first thing the agenda does in a turn it's active
+	// is to check the current location for exits to unvisted locations.
+	// If we make it through that without initializing the stack of
+	// unexplored exits, that means that we looked around and already
+	// new every connecting locaiton.  That should only happen in
+	// situations where the NPC has "memories" at the start of the
+	// game:  we were initialized already "knowing" about surrounding
+	// rooms.  To keep that from making us just give up (because we're
+	// looking for unexplored rooms and we just looked around and can't
+	// see any and don't remember any) we iterate over all rooms, check
+	// only those we've "seen", and take note of any unexplored exits
+	// from them.
 	initUnexplored() {
 		local a;
 
@@ -128,7 +145,6 @@ class Explore: TargetEngineAgendaItem
 		// don't do it again.
 		if(_unexploredInit == true)
 			return(nil);
-
 		_unexploredInit = true;
 
 		a = getActor();
@@ -154,14 +170,28 @@ class Explore: TargetEngineAgendaItem
 		_unexploredStack.append(new UnexploredExit(d, f));
 	}
 
+	// Try to move.
 	takeAction() {
 		local dst;
 
+		// Figure out if we're using depth- or breadth-first
+		// searching.
 		if(depthFirst == true)
 			dst = depthFirstMove();
 		else
 			dst = breadthFirstMove();
 
+		// The return value of our [whatever]Move() methods is:
+		//
+		//	nil	hard fail, give up
+		//
+		//	true	soft fail, just return. this will try to
+		//		use the Move agenda to move us to a better
+		//		location
+		//
+		//	[other]	success.  value should be a DestInfo instance
+		//		for the chosen move
+		//
 		if(dst == nil) {
 			_debug('failed, clearing');
 			clearConfig();
@@ -219,6 +249,8 @@ class Explore: TargetEngineAgendaItem
 			return(nil);
 		}
 
+		// Pick the last (most recent) element of the stack, make
+		// sure it's valid.
 		o = _unexploredStack[_unexploredStack.length];
 		if(!o.ofKind(UnexploredExit)) {
 			_debug('backtrack(): invalid memory');
@@ -238,11 +270,17 @@ class Explore: TargetEngineAgendaItem
 		return(true);
 	}
 
+	// Movement for a breadth-first search.
+	// Return value is a DestInfo instance on success, nil on failure,
+	// and true if we've punted off to the move agenda.
 	breadthFirstMove() {
 		local a, lst, r;
 
 		a = getActor();
 
+		// Get the unexplored exits from the current location.
+		// We only use this when checking to see if an exit in
+		// the stack corresponds to one in the current room.
 		lst = _getUnexploredExits(a.location);
 
 		// Now we try to pick the first unvisited exit on the
@@ -250,11 +288,7 @@ class Explore: TargetEngineAgendaItem
 		while(_unexploredStack.length > 0) {
 			// If we're already in the location the unvisited
 			// exit leads out of, we don't have to go there
-			// to try the exit.  So we just return it.  We
-			// have to do a small amount of juggling because
-			// we want a DestInfo instance (from the exit list)
-			// instead of a UnexploredExit instance (from the
-			// unvisited exits list), so we have to match them.
+			// to try the exit.  So we just return it.
 			if(a.location == _unexploredStack[1].from) {
 				r = lst.valWhich({ x: x.dest_ ==
 					_unexploredStack[1].dstInfo.dest_ });
