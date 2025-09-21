@@ -9,12 +9,20 @@
 
 #include "targetEngine.h"
 
+class Pebble: Thing '(small) (round) pebble' 'pebble'
+	"A small, round pebble. "
+	isEquivalent = true
+;
+
+class Rock: Thing '(ordinary) rock' 'rock'
+	"An ordinary rock. "
+	isEquivalent = true
+;
+
 pebbleRoom: Room 'Pebble Room'
 	"This is the starting room for the pebble. "
 	north = middleRoom
 ;
-+pebble: Thing 'small round pebble' 'pebble' "A small, round pebble. ";
-+rock: Thing '(ordinary) rock' 'rock' "An ordinary rock. ";
 
 middleRoom: Room 'Middle Room'
 	"This is the middle room used in the three-room demos. "

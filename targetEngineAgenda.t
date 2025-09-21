@@ -117,6 +117,9 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		if((v == nil) || (targetList == nil))
 			return(nil);
 
+		if(v.ofKind(TargetEngineTarget))
+			v = v.target;
+
 		b = nil;
 		while((r = targetList.valWhich({ x: x.target == v })) != nil) {
 			targetList.removeElement(r);
@@ -151,5 +154,30 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		clearConfig();
 
 		return(true);
+	}
+
+	getExitList(rm, cb?) {
+		local a, c, dst, r;
+
+		a = getActor();
+		r = new Vector(Direction.allDirections.length());
+
+		Direction.allDirections.forEach(function(d) {
+			if((c = rm.getTravelConnector(d, a)) == nil)
+				return;
+
+			if(!c.isConnectorApparent(rm, a))
+				return;
+
+			if((dst = c.getDestination(rm, a)) == nil)
+				return;
+
+			if((cb != nil) && ((cb)(d, dst) != true))
+				return;
+
+			r.append(new DestInfo(d, dst, nil, nil));
+		});
+
+		return(r);
 	}
 ;

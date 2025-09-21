@@ -83,18 +83,21 @@ class TargetEngine: TargetEngineObject
 	actor = nil
 
 	// Base classes for our basic agendas.
+	exploreAgendaClass = Explore
+	findAgendaClass = Find
+	interrogateAgendaClass = Interrogate
 	moveAgendaClass = Move
 	observeAgendaClass = Observe
 	obtainAgendaClass = Obtain
 	randomWalkAgendaClass = RandomWalk
-	interrogateAgendaClass = Interrogate
+	searchAgendaClass = Search
 
 	// List of "built-in" agendas.  These provide the basic
 	// functions we use:  moving to a target room, looking at a
 	// target object, and so on.
 	_agendaList = static [ moveAgendaClass, observeAgendaClass,
-		obtainAgendaClass, randomWalkAgendaClass,
-		interrogateAgendaClass ]
+		obtainAgendaClass, randomWalkAgendaClass, searchAgendaClass,
+		interrogateAgendaClass, findAgendaClass, exploreAgendaClass ]
 
 	// Called at preinit.
 	initializeTargetEngine() {
@@ -169,6 +172,7 @@ class TargetEngine: TargetEngineObject
 	_setTarget(v, cb, cls) {
 		local a, obj;
 
+		_debug('setting new target');
 		if((a = _getAgendaMatching(cls)) == nil)
 			return(nil);
 
@@ -190,14 +194,26 @@ class TargetEngine: TargetEngineObject
 
 	// Convenience methods for setting targets on specific types
 	// of agendas.
+
+	explore(v, cb?) { return(_setTarget(v, cb, exploreAgendaClass)); }
+	find(v, cb?) { return(_setTarget(v, cb, findAgendaClass)); }
+	interrogate(v?, cb?)
+		{ return(_setTarget(v, cb, interrogateAgendaClass)); }
 	moveTo(v, cb?) { return(_setTarget(v, cb, moveAgendaClass)); }
 	observe(v, cb?) { return(_setTarget(v, cb, observeAgendaClass)); }
 	obtain(v, cb?) { return(_setTarget(v, cb, obtainAgendaClass)); }
 	randomWalk(v?, cb?)
 		{ return(_setTarget(v, cb, randomWalkAgendaClass)); }
-	interrogate(v?, cb?)
-		{ return(_setTarget(v, cb, interrogateAgendaClass)); }
+	search(v?, cb?) {
+		return(_setTarget(v, cb, searchAgendaClass));
+	}
 
+	clearExplore(v)
+		{ return(_clearTargetObj(v, exploreAgendaClass)); }
+	clearFind(v)
+		{ return(_clearTargetObj(v, findAgendaClass)); }
+	clearInterrogate(v)
+		{ return(_clearTargetObj(v, interrogateAgendaClass)); }
 	clearMoveTo(v)
 		{ return(_clearTargetObj(v, moveAgendaClass)); }
 	clearObserve(v)
@@ -206,6 +222,6 @@ class TargetEngine: TargetEngineObject
 		{ return(_clearTargetObj(v, obtainAgendaClass)); }
 	clearRandomWalk(v)
 		{ return(_clearTargetObj(v, randomWalkAgendaClass)); }
-	clearInterrogate(v)
-		{ return(_clearTargetObj(v, interrogateAgendaClass)); }
+	clearSearch(v)
+		{ return(_clearTargetObj(v, searchAgendaClass)); }
 ;

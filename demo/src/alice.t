@@ -9,7 +9,7 @@
 
 #include "targetEngine.h"
 
-alice: Person 'Alice' 'Alice' @aliceRoom
+alice: Person, Alert 'Alice' 'Alice' @aliceRoom
 	"She looks like the first person you'd turn to in a problem. "
 	isHer = true
 	isProperName = true

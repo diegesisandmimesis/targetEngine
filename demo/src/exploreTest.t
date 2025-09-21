@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// randomWalkTest.t
+// exploreTest.t
 // Version 1.0
 // Copyright 2022 Diegesis & Mimesis
 //
@@ -8,7 +8,7 @@
 //
 // It can be compiled via the included makefile with
 //
-//	# t3make -f randomWalkTest.t3m
+//	# t3make -f exploreTest.t3m
 //
 // ...or the equivalent, depending on what TADS development environment
 // you're using.
@@ -48,7 +48,7 @@ gameMain: GameMainDef
 
 	showIntro() {
 		"This demo provides a <<inlineCommand('foozle')>>
-		command that triggers Alice's randomWalk agenda.
+		command that triggers Alice's Explore agenda.
 		<.p>
 		The world is a 10x10 random map with two extra rooms,
 		one in the southwest for the player and one in the northeast
@@ -61,17 +61,31 @@ gameMain: GameMainDef
 	}
 ;
 
-map: SimpleRandomMapGenerator;
-
-me: Person location = pebbleRoom;
+map: SimpleRandomMapGenerator mapWidth = 3;
+me: Person;
 
 modify FoozleAction
 	execSystemAction() {
 		alice.moveInto(map.getRandomRoom());
-		alice.randomWalk(3);
-		alice.randomWalk(4);
+		alice.explore(true);
 
-		defaultReport('Moved <<alice.name>> to
-			<<alice.location.roomName>>. ');
+		/*
+		alice.location.exitList().forEach(function(x) {
+			alice.setHasSeen(x.dest_);
+		});
+		*/
+		defaultReport('Placed <<alice.name>> in
+			<q><<alice.location.roomName>></q>. ');
 	}
 ;
+
+DefineSystemAction(Status)
+	execSystemAction() {
+		status(alice);
+	}
+	status(obj) {
+		if(obj.location == nil) return;
+		"<<obj.name>>: <<obj.location.roomName>>\n ";
+	}
+;
+VerbRule(Status) 'info': StatusAction verbPhrase = 'status/statusing';

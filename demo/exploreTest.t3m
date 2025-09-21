@@ -6,21 +6,24 @@
 -Fy obj -Fo obj
 -Fs /usr/local/share/frobtads/tads3/lib/extensions
 -Fs ../..
--o games/randomWalkTest.t3
+-o games/exploreTest.t3
 -lib system
 -lib adv3/adv3
 -lib syslog/syslog
+-lib adv3Utils/adv3Utils
 -lib outputToggle/outputToggle
 -lib modularExecuteCommand/modularExecuteCommand
 -lib moreFailureReports/moreFailureReports
 -lib thirdPersonAction/thirdPersonAction
 -lib execCommandAs/execCommandAs
 -lib simpleRandomMap/simpleRandomMap
+-lib uniqueID/uniqueID
+-lib memoryEngine/memoryEngine
 -lib bind/bind
 -lib ../targetEngine
 -source src/demoWorld.t
 -source src/alice.t
 -source src/foozleAction.t
--source src/randomWalkTest.t
+-source src/exploreTest.t
 -source pathfind.t
 -source reflect.t

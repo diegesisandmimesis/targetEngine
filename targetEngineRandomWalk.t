@@ -40,7 +40,6 @@ class RandomWalk: TargetEngineAgendaItem
 		randomWalkTimer += 1;
 		_debug('randomWalkTimer = <<toString(randomWalkTimer)>>
 			of <<toString(currentTarget.target)>>');
-
 	}
 
 	takeAction() {
@@ -98,11 +97,13 @@ class RandomWalk: TargetEngineAgendaItem
 	getRandomDirection(lst) {
 		local idx;
 
+		if((lst == nil) || (lst.length == 0)) return(nil);
 		idx = rand(lst.length) + 1;
 
 		return(lst[idx]);
 	}
 
+	/*
 	getExitList(rm, cb?) {
 		local a, c, dst, r;
 
@@ -127,4 +128,5 @@ class RandomWalk: TargetEngineAgendaItem
 
 		return(r);
 	}
+	*/
 ;

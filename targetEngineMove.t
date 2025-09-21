@@ -146,6 +146,7 @@ class Move: TargetEngineAgendaItem
 			_debug('tryMove():  movement command failed');
 			return(nil);
 		}
+		_debug('tryMove():  <<a.name>> moved <<dir.name>>');
 
 		// Remove the old current location from the path.
 		// If the remaining path has less than two elements,

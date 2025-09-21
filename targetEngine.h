@@ -5,6 +5,15 @@
 // Uncomment to enable debugging options.
 //#define __DEBUG_TARGET_ENGINE
 
+#include "adv3Utils.h"
+#ifndef ADV3_UTILS_H
+#error "This module requires the adv3Utils module."
+#error "https://github.com/diegesisandmimesis/adv3Utils"
+#error "It should be in the same parent directory as this module.  So if"
+#error "targetEngine is in /home/user/tads/targetEngine, then"
+#error "adv3Utils should be in /home/user/tads/adv3Utils ."
+#endif // ADV3_UTILS_H
+
 #include "syslog.h"
 #ifndef SYSLOG_H
 #error "This module requires the syslog module."
@@ -49,5 +58,7 @@
 #error "targetEngine is in /home/user/tads/targetEngine, then"
 #error "bind should be in /home/user/tads/bind ."
 #endif // BIND_H
+
+#define isUnvisitedExit(obj) ((obj != nil) && obj.ofKind(UnvisitedExit))
 
 #define TARGET_ENGINE_H

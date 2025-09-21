@@ -59,6 +59,13 @@ modify Actor
 	}
 
 	// Convenience methods to add specific kinds of targets.
+	explore(v?, cb?)
+		{ return(targetEngine ? targetEngine.explore(v, cb) : nil); }
+	find(v?, cb?)
+		{ return(targetEngine ? targetEngine.find(v, cb) : nil); }
+	interrogate(v?, cb?) {
+		return(targetEngine ? targetEngine.interrogate(v, cb) : nil);
+	}
 	moveTo(v, cb?)
 		{ return(targetEngine ? targetEngine.moveTo(v, cb) : nil); }
 	observe(v, cb?)
@@ -67,10 +74,16 @@ modify Actor
 		{ return(targetEngine ? targetEngine.obtain(v, cb) : nil); }
 	randomWalk(v?, cb?)
 		{ return(targetEngine ? targetEngine.randomWalk(v, cb) : nil); }
-	interrogate(v?, cb?) {
-		return(targetEngine ? targetEngine.interrogate(v, cb) : nil);
-	}
+	search(v?, cb?)
+		{ return(targetEngine ? targetEngine.search(v, cb) : nil); }
 
+	clearExplore(v) {
+		return(targetEngine ? targetEngine.clearExplore(v) : nil); }
+	clearFind(v) {
+		return(targetEngine ? targetEngine.clearFind(v) : nil); }
+	clearInterrogate(v) {
+		return(targetEngine ? targetEngine.clearInterrogate(v) : nil);
+	}
 	clearMoveTo(v) {
 		return(targetEngine ? targetEngine.clearMoveTo(v) : nil);
 	}
@@ -82,7 +95,4 @@ modify Actor
 	}
 	clearRandomWalk(v) {
 		return(targetEngine ? targetEngine.clearRandomWalk(v) : nil); }
-	clearInterrogate(v) {
-		return(targetEngine ? targetEngine.clearInterrogate(v) : nil);
-	}
 ;
