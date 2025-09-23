@@ -1,4 +1,4 @@
-# microlith
+# targetEngine
 
 A TADS3/adv3 module providing agendas for low-level NPC target-seeking
 behaviors.
