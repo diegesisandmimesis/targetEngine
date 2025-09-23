@@ -34,8 +34,7 @@ class Explore: TargetEngineAgendaItem
 	// next-oldest room with unvisited exits.  This will _generally_
 	// involve more backtracking that depthFirst, but it really
 	// depends on the actual layout of the map.
-	//depthFirst = true
-	depthFirst = nil
+	depthFirst = true
 
 	// The Explore agenda has a priority between the Move (which goes
 	// before) and RandomWalk (which goes after)
