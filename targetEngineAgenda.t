@@ -139,6 +139,9 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		takeAction();
 	}
 
+	// Stub main action method.
+	takeAction() {}
+
 	// Stub method.  Subclasses should check the given target
 	// and clear it if it's succeeded or failed.
 	checkTarget(t) {}

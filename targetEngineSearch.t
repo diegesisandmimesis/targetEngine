@@ -35,8 +35,31 @@ class Search: TargetEngineAgendaItem
 		lst = lst.subset({ x: x != a });
 		lst = lst.subset({ x: a.contents.valWhich({ y: y == x }) == nil });
 		lst = lst.subset({ x: isSearchable(x) });
+
+		return(lst);
 	}
 
 	isSearchable(obj) {
+		if(obj.ofKind(OpenableContainer) && !obj.isOpen()) return(true);
+		return(nil);
+	}
+
+	takeAction() {
+		local a, obj;
+
+		a = getActor();
+
+		// Should never happen.
+		if((searchList == nil) || (searchList.length < 1)) {
+			return;
+		}
+
+		obj = searchList[1];
+
+		if(execCommandAs(a, 'open <<obj.name>>') == nil) {
+			//_debug('takeAction(): attempt to open <<obj.name>>
+				//failed');
+			return;
+		}
 	}
 ;

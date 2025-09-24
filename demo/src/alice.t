@@ -43,7 +43,7 @@ alice: Person, Alert 'Alice' 'Alice' @aliceRoom
 ;
 ++ConversationReadyState
 	isInitState = true
-	specialDesc = "This is the ConversationReadyState description. "
+	specialDesc = "Alice is here in the conversation ready state. "
 	stateDesc = "Alice is in ConversationReadyState. "
 ;
 +++TopicGroupFor @gPlayerChar;
