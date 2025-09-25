@@ -74,11 +74,51 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		if(((a = getActor()) == nil) || (targetCount() == 0))
 			return(nil);
 
-		return(targetList.valWhich(function(o) {
-			return(o.target && ((o.target.location == a.location)
-				|| (o.target == a.location))
-			);
-		}));
+		return(targetList.valWhich({ x: matchTarget(a, x) }));
+	}
+
+	filterScopeList(fn) {
+		local a, lst;
+
+		a = getActor();
+
+		// Base scope list.
+		lst = a.scopeList();
+
+		// Exclude ourselves.
+		lst = lst.subset({ x: x != a });
+
+		// Exclude anything we're carrying.
+		lst = lst.subset(
+			{ x: a.contents.valWhich({ y: y == x }) == nil });
+
+		if(isFunction(fn))
+			lst = lst.subset(fn);
+
+		return(lst);
+	}
+
+	matchTarget(actor, obj) {
+		return(_matchTargetExact(actor, obj));
+	}
+
+	_matchTargetByClass(actor, obj) {
+		local i, l, r;
+
+		l = actor.scopeList();
+		for(i = 1; i <= targetList.length; i++) {
+			if((r = l.valWhich(
+				{ x: x.ofKind(targetList[i]) })) != nil)
+				return(r);
+		}
+
+		return(nil);
+	}
+
+	// Matches a specific, individual object in the actor's location.
+	_matchTargetExact(actor, obj) {
+		return(obj.target && ((obj.target.location == actor.location)
+			|| (obj.target == actor.location)));
 	}
 
 	// Returns a vector of all targets at the actor's location.
@@ -116,6 +156,11 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 
 		if((v == nil) || (targetList == nil))
 			return(nil);
+
+		if(v == true) {
+			targetList = nil;
+			return(true);
+		}
 
 		if(v.ofKind(TargetEngineTarget))
 			v = v.target;

@@ -61,4 +61,12 @@
 
 #define isUnvisitedExit(obj) ((obj != nil) && obj.ofKind(UnvisitedExit))
 
+#ifndef isFunction
+#define isFunction(obj) ((dataType(obj) != TypeNil) && ( \
+	((dataType(obj) == TypeProp) && ((propType(obj) == TypeFuncPtr) \
+		|| (propType(obj) == TypeCode))) \
+	|| (dataTypeXlat(obj) == TypeFuncPtr) \
+))
+#endif // isFunction
+
 #define TARGET_ENGINE_H

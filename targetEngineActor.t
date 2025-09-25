@@ -95,4 +95,11 @@ modify Actor
 	}
 	clearRandomWalk(v) {
 		return(targetEngine ? targetEngine.clearRandomWalk(v) : nil); }
+	clearSearch(v) {
+		return(targetEngine ? targetEngine.clearSearch(v) : nil); }
+
+	getAgendaMatching(cls) {
+		return(targetEngine ? targetEngine._getAgendaMatching(cls)
+			: nil);
+	}
 ;
