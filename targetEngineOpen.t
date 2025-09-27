@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// targetEngineSearch.t
+// targetEngineOpen.t
 //
 //
 #include <adv3.h>
@@ -8,18 +8,10 @@
 
 #include "targetEngine.h"
 
-class Search: TargetEngineAgendaItem
-	syslogID = 'Search'
+class Open: TargetEngineAgendaItem
+	syslogID = 'Unlock'
 
-	// TargetEngine agendas are in the range 101-199.  We're after
-	// Observe and Obtain and before the movement-related agendas.
-	agendaOrder = 134
-
-	// Per-turn list of searchable objects in the actor's current context.
-	searchList = nil
-
-	_lockedList = nil
-	_triedList = nil
+	agendaOrder = 132
 
 	checkProgress() { return(nil); }
 
@@ -34,18 +26,6 @@ class Search: TargetEngineAgendaItem
 
 	getSearchList() {
 		return(filterScopeList({ x: isSearchable(x) }));
-	/*
-		local a, lst;
-
-		a = getActor();
-		lst = a.scopeList();
-		lst = lst.subset({ x: x != a });
-		lst = lst.subset(
-			{ x: a.contents.valWhich({ y: y == x }) == nil });
-		lst = lst.subset({ x: isSearchable(x) });
-
-		return(lst);
-	*/
 	}
 
 	addToLockedList(obj) {
@@ -75,14 +55,13 @@ class Search: TargetEngineAgendaItem
 
 	obtainedKey(obj) {
 		_lockedList = _lockedList.subset({ x: !x.keyIsPlausible(obj) });
-		aioSay('\nobtained <<toString(obj)>>\n ');
+		//aioSay('\nobtained <<toString(obj)>>\n ');
 	}
 
 	isOnLockedList(obj) {
 		return((_lockedList != nil)
 			&& (_lockedList.valWhich({ x: x == obj }) != nil));
 	}
-
 
 	addToTriedList(obj) {
 		if(_triedList == nil)

@@ -59,8 +59,9 @@ modify Actor
 	}
 
 	// Convenience methods to add specific kinds of targets.
-	explore(v?, cb?)
-		{ return(targetEngine ? targetEngine.explore(v, cb) : nil); }
+	/*
+	//explore(v?, cb?)
+		//{ return(targetEngine ? targetEngine.explore(v, cb) : nil); }
 	find(v?, cb?)
 		{ return(targetEngine ? targetEngine.find(v, cb) : nil); }
 	interrogate(v?, cb?) {
@@ -72,13 +73,21 @@ modify Actor
 		{ return(targetEngine ? targetEngine.observe(v, cb) : nil); }
 	obtain(v, cb?)
 		{ return(targetEngine ? targetEngine.obtain(v, cb) : nil); }
+	obtainCustom(v, cb?) {
+		return(targetEngine ? targetEngine.obtainCustom(v, cb) : nil);
+	}
 	randomWalk(v?, cb?)
 		{ return(targetEngine ? targetEngine.randomWalk(v, cb) : nil); }
 	search(v?, cb?)
 		{ return(targetEngine ? targetEngine.search(v, cb) : nil); }
+	
+	open(v?, cb?)
+		{ return(targetEngine ? targetEngine.open(v, cb) : nil); }
+	unlock(v?, cb?)
+		{ return(targetEngine ? targetEngine.unlock(v, cb) : nil); }
 
-	clearExplore(v) {
-		return(targetEngine ? targetEngine.clearExplore(v) : nil); }
+	//clearExplore(v) {
+		//return(targetEngine ? targetEngine.clearExplore(v) : nil); }
 	clearFind(v) {
 		return(targetEngine ? targetEngine.clearFind(v) : nil); }
 	clearInterrogate(v) {
@@ -93,10 +102,33 @@ modify Actor
 	clearObtain(v) {
 		return(targetEngine ? targetEngine.clearObtain(v) : nil);
 	}
+	clearObtainCustom(v) {
+		return(targetEngine ? targetEngine.clearObtainCustom(v) : nil);
+	}
 	clearRandomWalk(v) {
 		return(targetEngine ? targetEngine.clearRandomWalk(v) : nil); }
 	clearSearch(v) {
 		return(targetEngine ? targetEngine.clearSearch(v) : nil); }
+
+	clearOpen(v)
+		{ return(targetEngine ? targetEngine.clearOpen(v) : nil); }
+	clearUnlock(v)
+		{ return(targetEngine ? targetEngine.clearUnlock(v) : nil); }
+		*/
+	
+	/*
+	actorTargetMethods(explore, Explore)
+	actorTargetMethods(find, Find)
+	actorTargetMethods(interrogate, Interrogate)
+	actorTargetMethods(moveTo, MoveTo)
+	actorTargetMethods(observe, Observe)
+	actorTargetMethods(obtain, Obtain)
+	actorTargetMethods(obtainCustom, ObtainCustom)
+	actorTargetMethods(randomWalk, RandomWalk)
+	actorTargetMethods(search, Search)
+	actorTargetMethods(open, Open)
+	actorTargetMethods(unlock, Unlock)
+	*/
 
 	getAgendaMatching(cls) {
 		return(targetEngine ? targetEngine._getAgendaMatching(cls)

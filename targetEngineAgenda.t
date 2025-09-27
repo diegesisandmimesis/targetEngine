@@ -103,13 +103,12 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 	}
 
 	_matchTargetByClass(actor, obj) {
-		local i, l, r;
+		local i, l;
 
 		l = actor.scopeList();
-		for(i = 1; i <= targetList.length; i++) {
-			if((r = l.valWhich(
-				{ x: x.ofKind(targetList[i]) })) != nil)
-				return(r);
+		for(i = 1; i <= l.length; i++) {
+			if(l[i].ofKind(obj.target))
+				return(true);
 		}
 
 		return(nil);

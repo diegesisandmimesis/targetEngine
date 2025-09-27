@@ -83,21 +83,34 @@ class TargetEngine: TargetEngineObject
 	actor = nil
 
 	// Base classes for our basic agendas.
+	/*
 	exploreAgendaClass = Explore
 	findAgendaClass = Find
 	interrogateAgendaClass = Interrogate
-	moveAgendaClass = Move
+	moveToAgendaClass = MoveTo
 	observeAgendaClass = Observe
 	obtainAgendaClass = Obtain
+	obtainCustomAgendaClass = ObtainCustom
 	randomWalkAgendaClass = RandomWalk
 	searchAgendaClass = Search
+
+	openAgendaClass = Open
+	unlockAgendaClass = Unlock
+	*/
+
+	unlockList = nil
+	openList = nil
 
 	// List of "built-in" agendas.  These provide the basic
 	// functions we use:  moving to a target room, looking at a
 	// target object, and so on.
-	_agendaList = static [ moveAgendaClass, observeAgendaClass,
+	_agendaList = static []
+	/*
+	_agendaList = static [ moveToAgendaClass, observeAgendaClass,
 		obtainAgendaClass, randomWalkAgendaClass, searchAgendaClass,
-		interrogateAgendaClass, findAgendaClass, exploreAgendaClass ]
+		interrogateAgendaClass, findAgendaClass, exploreAgendaClass,
+		obtainCustomAgendaClass, openAgendaClass, unlockAgendaClass ]
+		*/
 
 	// Called at preinit.
 	initializeTargetEngine() {
@@ -195,21 +208,27 @@ class TargetEngine: TargetEngineObject
 	// Convenience methods for setting targets on specific types
 	// of agendas.
 
-	explore(v, cb?) { return(_setTarget(v, cb, exploreAgendaClass)); }
+	/*
+	//explore(v, cb?) { return(_setTarget(v, cb, exploreAgendaClass)); }
 	find(v, cb?) { return(_setTarget(v, cb, findAgendaClass)); }
 	interrogate(v?, cb?)
 		{ return(_setTarget(v, cb, interrogateAgendaClass)); }
 	moveTo(v, cb?) { return(_setTarget(v, cb, moveAgendaClass)); }
 	observe(v, cb?) { return(_setTarget(v, cb, observeAgendaClass)); }
 	obtain(v, cb?) { return(_setTarget(v, cb, obtainAgendaClass)); }
+	obtainCustom(v, cb?)
+		{ return(_setTarget(v, cb, obtainCustomAgendaClass)); }
 	randomWalk(v?, cb?)
 		{ return(_setTarget(v, cb, randomWalkAgendaClass)); }
 	search(v?, cb?) {
 		return(_setTarget(v, cb, searchAgendaClass));
 	}
 
-	clearExplore(v)
-		{ return(_clearTargetObj(v, exploreAgendaClass)); }
+	open(v?, cb?) { return(_setTarget(v, cb, openAgendaClass)); }
+	unlock(v?, cb?) { return(_setTarget(v, cb, unlockAgendaClass)); }
+
+	//clearExplore(v)
+		//{ return(_clearTargetObj(v, exploreAgendaClass)); }
 	clearFind(v)
 		{ return(_clearTargetObj(v, findAgendaClass)); }
 	clearInterrogate(v)
@@ -220,8 +239,27 @@ class TargetEngine: TargetEngineObject
 		{ return(_clearTargetObj(v, observeAgendaClass)); }
 	clearObtain(v)
 		{ return(_clearTargetObj(v, obtainAgendaClass)); }
+	clearObtainCustom(v)
+		{ return(_clearTargetObj(v, obtainCustomAgendaClass)); }
 	clearRandomWalk(v)
 		{ return(_clearTargetObj(v, randomWalkAgendaClass)); }
 	clearSearch(v)
 		{ return(_clearTargetObj(v, searchAgendaClass)); }
+
+	clearOpen(v)
+		{ return(_clearTargetObj(v, openAgendaClass)); }
+	clearUnlock(v)
+		{ return(_clearTargetObj(v, unlockAgendaClass)); }
+	*/
+	
+	//targetMethods(explore, Explore)
+	//targetMethods(find, Find)
+	//targetMethods(interrogate, Interrogate)
+	//targetMethods(moveTo, MoveTo)
+	//targetMethods(observe, Observe)
+	//targetMethods(obtain, Obtain)
+	//targetMethods(obtainCustom, ObtainCustom)
+	//targetMethods(randomWalk, RandomWalk)
+	//targetMethods(open, Open)
+	//targetMethods(unlock, Unlock)
 ;

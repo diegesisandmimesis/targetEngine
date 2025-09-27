@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// targetEngineMove.t
+// targetEngineMoveTo.t
 //
 //	Agenda that takes care of moving to a requested location.
 //
@@ -9,8 +9,8 @@
 
 #include "targetEngine.h"
 
-class Move: TargetEngineAgendaItem
-	syslogID = 'Move'
+class MoveTo: TargetEngineAgendaItem
+	syslogID = 'MoveTo'
 
 	// TargetEngine agendas are in the range 101-199.  We're here
 	// to allow observation and scavenging to happen before movement.

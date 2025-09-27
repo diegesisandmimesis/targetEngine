@@ -333,7 +333,7 @@ class Explore: TargetEngineAgendaItem
 
 		// Get the move agenda itself.
 		m = a.targetEngine._getAgendaMatching(
-			a.targetEngine.moveAgendaClass);
+			a.targetEngine.moveToAgendaClass);
 
 		// Invoke it.  We do this because our agendaOrder is higher
 		// than the move agenda and if we've reached this point we're

@@ -50,23 +50,37 @@
 #error "execCommandAs should be in /home/user/tads/execCommandAs ."
 #endif // EXEC_COMMAND_AS_H
 
-#include "bind.h"
-#ifndef BIND_H
-#error "This module requires the bind module."
-#error "https://github.com/diegesisandmimesis/bind"
+#include "dataTypes.h"
+#ifndef DATA_TYPES_H
+#error "This module requires the dataTypes module."
+#error "https://github.com/diegesisandmimesis/dataTypes"
 #error "It should be in the same parent directory as this module.  So if"
 #error "targetEngine is in /home/user/tads/targetEngine, then"
-#error "bind should be in /home/user/tads/bind ."
-#endif // BIND_H
+#error "dataTypes should be in /home/user/tads/dataTypes ."
+#endif // DATA_TYPES_H
 
-#define isUnvisitedExit(obj) ((obj != nil) && obj.ofKind(UnvisitedExit))
+#define isUnvisitedExit(obj) isType(obj, UnvisitedExit)
+#define isTargetEngineMemory(obj) isType(obj, TargetEngineMemory)
 
-#ifndef isFunction
-#define isFunction(obj) ((dataType(obj) != TypeNil) && ( \
-	((dataType(obj) == TypeProp) && ((propType(obj) == TypeFuncPtr) \
-		|| (propType(obj) == TypeCode))) \
-	|| (dataTypeXlat(obj) == TypeFuncPtr) \
-))
-#endif // isFunction
+#define targetMethods(lc, uc) \
+	lc##(v?, cb?) { return(_setTarget(v, cb, lc##AgendaClass)); } \
+	clear##uc##(v) { return(_clearTargetObj(v, lc##AgendaClass)); }
+
+#define actorTargetMethods(lc, uc) \
+	lc##(v?, cb?) \
+		{ return(targetEngine ? targetEngine.##lc##(v, cb) : nil); } \
+	clear##uc##(v) \
+		{ return(targetEngine ? targetEngine.clear##uc##(v) : nil); }
+
+#define targetEngineMethods(lc, uc) \
+modify TargetEngine \
+	lc##AgendaClass = ##uc\
+	_agendaList = (nilToList(inherited()) + [ lc##AgendaClass ]) \
+	targetMethods(lc, uc) \
+; \
+modify Actor \
+	actorTargetMethods(lc, uc) \
+;
+
 
 #define TARGET_ENGINE_H

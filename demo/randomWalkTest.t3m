@@ -10,13 +10,16 @@
 -lib system
 -lib adv3/adv3
 -lib syslog/syslog
+-lib adv3Utils/adv3Utils
+-lib dataTypes/dataTypes
 -lib outputToggle/outputToggle
 -lib modularExecuteCommand/modularExecuteCommand
 -lib moreFailureReports/moreFailureReports
 -lib thirdPersonAction/thirdPersonAction
 -lib execCommandAs/execCommandAs
+-lib uniqueID/uniqueID
+-lib memoryEngine/memoryEngine
 -lib simpleRandomMap/simpleRandomMap
--lib bind/bind
 -lib ../targetEngine
 -source src/demoWorld.t
 -source src/alice.t
