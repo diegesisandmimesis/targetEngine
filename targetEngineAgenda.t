@@ -34,7 +34,10 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		if(targetList == nil)
 			targetList = new Vector();
 
-		targetList.appendUnique(v);
+		if(targetList.valWhich({ x:  v.target == x.target }) != nil)
+			return(nil);
+
+		targetList.append(v);
 
 		return(true);
 	}

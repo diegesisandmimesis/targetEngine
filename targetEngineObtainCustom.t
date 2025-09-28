@@ -32,6 +32,7 @@ class ObtainCustom: Obtain
 	takeTarget() {
 		local a, i, t;
 
+_debug('take');
 		a = getActor();
 		for(i = 1; i <= targetList.length; i++) {
 			if((t = matchCustom(a, targetList[i])) != nil) {

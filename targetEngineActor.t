@@ -134,4 +134,15 @@ modify Actor
 		return(targetEngine ? targetEngine._getAgendaMatching(cls)
 			: nil);
 	}
+
+	invokeAgendaMatching(cls) {
+		local a;
+
+		if(targetEngine == nil)
+			return(nil);
+		if((a = targetEngine._getAgendaMatching(cls)) == nil)
+			return(nil);
+		a.invokeItem();
+		return(true);
+	}
 ;

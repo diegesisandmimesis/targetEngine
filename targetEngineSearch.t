@@ -18,9 +18,6 @@ class Search: TargetEngineAgendaItem
 	// Per-turn list of searchable objects in the actor's current context.
 	searchList = nil
 
-	_lockedList = nil
-	_triedList = nil
-
 	checkProgress() { return(nil); }
 
 	configReady() {
@@ -32,78 +29,11 @@ class Search: TargetEngineAgendaItem
 		return((searchList != nil) && (searchList.length > 0));
 	}
 
-	getSearchList() {
-		return(filterScopeList({ x: isSearchable(x) }));
-	/*
-		local a, lst;
-
-		a = getActor();
-		lst = a.scopeList();
-		lst = lst.subset({ x: x != a });
-		lst = lst.subset(
-			{ x: a.contents.valWhich({ y: y == x }) == nil });
-		lst = lst.subset({ x: isSearchable(x) });
-
-		return(lst);
-	*/
-	}
-
-	addToLockedList(obj) {
-		if(_lockedList == nil)
-			_lockedList = new Vector();
-		_lockedList.appendUnique(obj);
-		getActor().obtainCustom(bind(&matchKey, self),
-			bind(&obtainedKey, self));
-	}
-
-	matchKey(obj) {
-		local i;
-
-		if(!obj.ofKind(Key))
-			return(nil);
-
-		if(_lockedList == nil)
-			return(nil);
-
-		for(i = 1; i <= _lockedList.length; i++) {
-			if(_lockedList[i].keyIsPlausible(obj))
-				return(true);
-		}
-
-		return(nil);
-	}
-
-	obtainedKey(obj) {
-		_lockedList = _lockedList.subset({ x: !x.keyIsPlausible(obj) });
-		aioSay('\nobtained <<toString(obj)>>\n ');
-	}
-
-	isOnLockedList(obj) {
-		return((_lockedList != nil)
-			&& (_lockedList.valWhich({ x: x == obj }) != nil));
-	}
-
-
-	addToTriedList(obj) {
-		if(_triedList == nil)
-			_triedList = new Vector();
-		_triedList.appendUnique(obj);
-	}
-
-	isOnTriedList(obj) {
-		return((_triedList != nil)
-			&& (_triedList.valWhich({ x: x == obj }) != nil));
-	}
+	getSearchList() { return(filterScopeList({ x: isSearchable(x) })); }
 
 	isSearchable(obj) {
-		// If we already tried it, skip it.
-		if(isOnTriedList(obj)) return(nil);
-
 		// Openable but closed containers are search targets.
 		if(obj.ofKind(OpenableContainer) && !obj.isOpen()) {
-			// Skip containers we know we can't open.
-			if(isOnLockedList(obj)) return(nil);
-
 			return(true);
 		}
 
@@ -112,33 +42,21 @@ class Search: TargetEngineAgendaItem
 	}
 
 	takeAction() {
-		local a, obj;
+		local a, i;
 
 		a = getActor();
 
 		// Should never happen.
-		if((searchList == nil) || (searchList.length < 1)) {
+		if((searchList == nil) || (searchList.length < 1))
 			return;
-		}
 
-		obj = searchList[1];
-
-		if(execCommandAs(a, 'open <<obj.name>>') == nil) {
-			// Remember this object.
-			if(obj.isLocked()) {
-				// Remember that the container is locked, in
-				// the interest of checking later if we have
-				// the key.
-				addToLockedList(obj);
-			} else {
-				// Remember a failure for reasons other than
-				// the container being locked.  By default
-				// we won't retry these.
-				addToTriedList(obj);
+		for(i = 1; i <= searchList.length; i++) {
+			if(a.open(searchList[i]) == true) {
+				a.invokeAgendaMatching(Open);
+				return;
 			}
-			_debug('takeAction(): attempt to open <<obj.name>>
-				failed');
-			return;
 		}
 	}
+
+		
 ;
