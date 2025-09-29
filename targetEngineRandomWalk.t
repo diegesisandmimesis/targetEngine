@@ -102,31 +102,4 @@ class RandomWalk: TargetEngineAgendaItem
 
 		return(lst[idx]);
 	}
-
-	/*
-	getExitList(rm, cb?) {
-		local a, c, dst, r;
-
-		a = getActor();
-		r = new Vector(Direction.allDirections.length());
-
-		Direction.allDirections.forEach(function(d) {
-			if((c = rm.getTravelConnector(d, a)) == nil)
-				return;
-
-			if(!c.isConnectorApparent(rm, a))
-				return;
-
-			if((dst = c.getDestination(rm, a)) == nil)
-				return;
-
-			if((cb != nil) && ((cb)(d, dst) != true))
-				return;
-
-			r.append(new DestInfo(d, dst, nil, nil));
-		});
-
-		return(r);
-	}
-	*/
 ;

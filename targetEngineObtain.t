@@ -28,7 +28,7 @@ class Obtain: TargetEngineAgendaItem
 			return;
 
 		if(a.canTouch(t.target)) {
-			if(execCommandAs(a, 'take <<t.target.name>>'))
+			if(execCommandAs(a, 'take <<t.target.disambigName>>'))
 				targetSuccess(t);
 			else
 				targetFailure(t);

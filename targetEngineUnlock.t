@@ -93,12 +93,13 @@ class Unlock: TargetEngineAgendaItem
 			return;
 
 		addTriedKey(k, t.target);
-		if(execCommandAs(a, 'unlock <<t.target.name>> with <<k.name>>')) {
+		if(forceExecCommandAs(a, 'unlock <<t.target.name>> with <<k.name>>')) {
 			_debug('unlocked <<t.target.name>>');
 			a.open(t.target);
 			targetSuccess(t);
 		} else {
 			_debug('key <<k.name>> failed for <<t.target.name>>');
+			a.getAgendaMatching(Open).addFailed(t.target);
 			return;
 		}
 	}
