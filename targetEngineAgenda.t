@@ -61,6 +61,15 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		return(targetList[idx]);
 	}
 
+	// Returns a list containing all the TargetEngineTarget instances in
+	// the target list whose target is the given object.
+	getTargetsByObject(obj) {
+		if((obj == nil) || (targetList == nil))
+			return([]);
+		return(targetList.subset({ x: x.target == obj }));
+	}
+
+
 	// Returns the current number of targets.
 	targetCount = (targetList ? targetList.length : 0)
 
@@ -147,17 +156,26 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 
 	// Clear a specific target.
 	clearTarget(v, [args]) {
+		if((v == nil) || (targetList == nil))
+			return(nil);
+
+		if(!isTargetEngineTarget(v))
+			return(clearTargetObj(v, args...));
+
 		v.callback(args...);
 		if(targetList != nil)
 			targetList.removeElement(v);
+
+		return(true);
 	}
 	removeTarget(v, [args]) { clearTarget(v, args...); }
 
-	clearTargetObj(v) {
+	clearTargetObj(v, [args]) {
 		local b, r;
 
 		if((v == nil) || (targetList == nil))
 			return(nil);
+
 
 		if(v == true) {
 			targetList = nil;
@@ -169,6 +187,7 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 
 		b = nil;
 		while((r = targetList.valWhich({ x: x.target == v })) != nil) {
+			r.callback(args...);
 			targetList.removeElement(r);
 			b = true;
 		}

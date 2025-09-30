@@ -60,7 +60,8 @@
 #endif // DATA_TYPES_H
 
 #define isUnvisitedExit(obj) isType(obj, UnvisitedExit)
-#define isTargetEngineMemory(obj) isType(obj, TargetEngineMemory)
+#define isTargetEngineAgenda(obj) isType(obj, TargetEngineAgenda)
+#define isTargetEngineTarget(obj) isType(obj, TargetEngineTarget)
 
 #define targetMethods(lc, uc) \
 	lc##(v?, cb?) { return(_setTarget(v, cb, lc##AgendaClass)); } \

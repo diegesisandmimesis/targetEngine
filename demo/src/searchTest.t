@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// exploreTest.t
+// searchTest.t
 // Version 1.0
 // Copyright 2022 Diegesis & Mimesis
 //
@@ -8,7 +8,7 @@
 //
 // It can be compiled via the included makefile with
 //
-//	# t3make -f exploreTest.t3m
+//	# t3make -f searchTest.t3m
 //
 // ...or the equivalent, depending on what TADS development environment
 // you're using.
@@ -48,39 +48,57 @@ gameMain: GameMainDef
 
 	showIntro() {
 		"This demo provides a <<inlineCommand('foozle')>>
-		command that triggers Alice's Explore agenda.
-		<.p>
-		The world is a 10x10 random map with two extra rooms,
-		one in the southwest for the player and one in the northeast
-		for Alice.
-		<.p>
-		The makefile for this demo uses -D SYSLOG to output
-		logging information, so the player can see Alice's
-		movements.
+		command that triggers Alice's searchTest agenda.
 		<.p> ";
 	}
 ;
 
-map: SimpleRandomMapGenerator mapWidth = 3;
-me: Person;
+modify pebbleRoom north = middleRoom;
+modify aliceRoom south = middleRoom;
++me: Person 'player' 'player';
++searchableBox: OpenableContainer '(searchable) box' 'searchable box'
+	"It's a searchable box. ";
+;
++lockedBox: KeyedContainer '(lockable) box' 'lockable box'
+	"It's a lockable box. "
+	keyList = static [ key01 ]
+;
++key02: Key '(fake) key' 'fake key'
+	"A fake key. "
+;
+key01: Key '(ordinary) key' 'ordinary key'
+	"An ordinary key. "
+;
 
 modify FoozleAction
 	execSystemAction() {
-		alice.moveInto(map.getRandomRoom());
-		alice.explore(true);
+		local a;
 
-		/*
-		alice.location.exitList().forEach(function(x) {
-			alice.setHasSeen(x.dest_);
-		});
-		*/
-		defaultReport('Placed <<alice.name>> in
-			<q><<alice.location.roomName>></q>. ');
+		if((a = alice.targetEngine._getAgendaMatching(Search)) == nil) {
+			reportFailure('No search agenda found. ');
+			exit;
+		}
+		if(a.targetCount() == 0) {
+			alice.search(true);
+			defaultReport('Alice is now searching. ');
+		} else {
+			alice.clearSearch(true);
+			defaultReport('Alice is no longer searching. ');
+		}
 	}
 ;
 
 modify InfoAction
 	execSystemAction() {
-		status(alice);
+		info(alice);
 	}
 ;
+
+DefineSystemAction(Magic)
+	execSystemAction() {
+		key01.moveInto(gActor.location);
+		defaultReport('\^<<key01.theName>> appears. ');
+	}
+;
+VerbRule(Magic) 'magic': MagicAction verbPhrase = 'magic/magicing';
+

@@ -1,6 +1,6 @@
 #charset "us-ascii"
 //
-// exploreTest.t
+// findTest.t
 // Version 1.0
 // Copyright 2022 Diegesis & Mimesis
 //
@@ -8,7 +8,7 @@
 //
 // It can be compiled via the included makefile with
 //
-//	# t3make -f exploreTest.t3m
+//	# t3make -f findTest.t3m
 //
 // ...or the equivalent, depending on what TADS development environment
 // you're using.
@@ -63,17 +63,15 @@ gameMain: GameMainDef
 
 map: SimpleRandomMapGenerator mapWidth = 3;
 me: Person;
+pebble: Thing '(small) (round) pebble' 'pebble' "A small, round pebble. ";
 
 modify FoozleAction
 	execSystemAction() {
+		pebble.moveInto(map.getRandomRoom());
 		alice.moveInto(map.getRandomRoom());
-		alice.explore(true);
 
-		/*
-		alice.location.exitList().forEach(function(x) {
-			alice.setHasSeen(x.dest_);
-		});
-		*/
+		alice.find(pebble);
+		//alice.explore(true);
 		defaultReport('Placed <<alice.name>> in
 			<q><<alice.location.roomName>></q>. ');
 	}
@@ -81,6 +79,7 @@ modify FoozleAction
 
 modify InfoAction
 	execSystemAction() {
-		status(alice);
+		info(alice);
+		info(pebble);
 	}
 ;

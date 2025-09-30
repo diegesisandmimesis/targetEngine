@@ -18,7 +18,7 @@
 // for interacting with a TargetEngineAgenda subclass named Foozle
 //
 targetEngineMethods(explore, Explore)
-targetEngineMethods(find, Find)
+//targetEngineMethods(find, Find)
 targetEngineMethods(interrogate, Interrogate)
 targetEngineMethods(moveTo, MoveTo)
 targetEngineMethods(observe, Observe)
@@ -28,3 +28,18 @@ targetEngineMethods(randomWalk, RandomWalk)
 targetEngineMethods(search, Search)
 targetEngineMethods(open, Open)
 targetEngineMethods(unlock, Unlock)
+
+
+/*
+modify TargetEngine
+	obtainAgendaClass = Obtain
+	_agendaList = (nilToList(inherited()) + [ Obtain ])
+	obtain(v?, cb?) { return(_setTarget(v, cb, obtainAgendaClass)); }
+	clearObtain(v) { return(_clearTargetObj(v, obtainAgendaClass)); }
+;
+
+modify Actor
+	obtain(v?, cb?) { return(targetEngine ? targetEngine.obtain(v, cb) : nil); }
+	clearObtain(v) { return(targetEngine ? targetEngine.clearObtain(v) : nil); }
+;
+*/
