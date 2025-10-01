@@ -12,7 +12,7 @@ class Observe: TargetEngineAgendaItem
 
 	// TargetEngine agendas are in the range 101-199.  Observation happens
 	// very early, pre-empting movement and so on.
-	agendaOrder = 105
+	agendaOrder = 110
 
 	isReady = ((configReady() == true) && (atTarget() == true))
 

@@ -14,7 +14,7 @@ class MoveTo: TargetEngineAgendaItem
 
 	// TargetEngine agendas are in the range 101-199.  We're here
 	// to allow observation and scavenging to happen before movement.
-	agendaOrder = 150
+	agendaOrder = 170
 
 	// Computed path
 	path = nil

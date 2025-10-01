@@ -17,17 +17,16 @@
 // adds a .foozle() and .clearFoozle() method to TargetEngine and Actor,
 // for interacting with a TargetEngineAgenda subclass named Foozle
 //
-targetEngineMethods(explore, Explore)
-//targetEngineMethods(find, Find)
-targetEngineMethods(interrogate, Interrogate)
-targetEngineMethods(moveTo, MoveTo)
-targetEngineMethods(observe, Observe)
-targetEngineMethods(obtain, Obtain)
-targetEngineMethods(obtainCustom, ObtainCustom)
-targetEngineMethods(randomWalk, RandomWalk)
-targetEngineMethods(search, Search)
-targetEngineMethods(open, Open)
-targetEngineMethods(unlock, Unlock)
+targetEngineMethods(observe, Observe, 110)
+targetEngineMethods(interrogate, Interrogate, 120)
+targetEngineMethods(obtain, Obtain, 130)
+targetEngineMethods(obtainCustom, ObtainCustom, 135)
+targetEngineMethods(unlock, Unlock, 140)
+targetEngineMethods(open, Open, 150)
+targetEngineMethods(search, Search, 160)
+targetEngineMethods(moveTo, MoveTo, 170)
+targetEngineMethods(explore, Explore, 180)
+targetEngineMethods(randomWalk, RandomWalk, 199)
 
 
 /*

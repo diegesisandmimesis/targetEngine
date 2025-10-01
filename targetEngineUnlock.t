@@ -11,7 +11,7 @@
 class Unlock: TargetEngineAgendaItem
 	syslogID = 'Unlock'
 
-	agendaOrder = 130
+	agendaOrder = 140
 
 	isReady = ((configReady() == true) && (atTarget() == true))
 

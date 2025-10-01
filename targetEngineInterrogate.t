@@ -16,7 +16,7 @@ class Interrogate: TargetEngineAgendaItem
 	syslogID = 'Interrogate'
 
 	// TargetEngine agendas are in the range 101-199.
-	agendaOrder = 110
+	agendaOrder = 120
 
 	isReady = ((configReady() == true) && (atTarget() == true))
 

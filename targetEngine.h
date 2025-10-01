@@ -73,7 +73,7 @@
 	clear##uc##(v) \
 		{ return(targetEngine ? targetEngine.clear##uc##(v) : nil); }
 
-#define targetEngineMethods(lc, uc) \
+#define targetEngineMethods(lc, uc, n) \
 modify TargetEngine \
 	lc##AgendaClass = ##uc\
 	_agendaList = (nilToList(inherited()) + [ lc##AgendaClass ]) \
@@ -81,7 +81,9 @@ modify TargetEngine \
 ; \
 modify Actor \
 	actorTargetMethods(lc, uc) \
+; \
+modify uc \
+	agendaOrder = ##n\
 ;
-
 
 #define TARGET_ENGINE_H

@@ -9,6 +9,7 @@ source: targetEngineObtainCustom.t
 source: targetEngineObserve.t
 source: targetEngineUnlock.t
 source: targetEngineOpen.t
+source: targetEngineRetrieve.t
 source: targetEngineSearch.t
 source: targetEngineMoveTo.t
 source: targetEngineFind.t

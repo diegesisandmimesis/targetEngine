@@ -148,13 +148,13 @@ modify Actor
 
 	// Find pseudo-agenda.  Follows the same general semantics as the
 	// other agendas but is just a frontend for several.
-	find(t) {
+	find(t, cb?) {
 		if(!isThing(t))
 			return(nil);
 
 		// Add the object to the obtain target list.  If and when
 		// it obtains the target it'll call our _clearFind() method.
-		obtain(t, bind(&_clearFind, self, t));
+		obtain(t, bind(&_clearFind, self, t, cb));
 
 		// Additional agendas to actually send the actor out to
 		// find the target.
@@ -179,7 +179,10 @@ modify Actor
 	// the obtain agenda succeeds in obtaining the target or decides
 	// to permanently fail.  In either case we want to clear out the
 	// other agendas we started for this target.
-	_clearFind(t, arg?) {
+	_clearFind(t, cb?, args?) {
+		if(isFunction(cb)) {
+			(cb)(t, args...);
+		}
 		clearExplore(t);
 		clearSearch(t);
 	}

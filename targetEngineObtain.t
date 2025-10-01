@@ -12,7 +12,7 @@ class Obtain: TargetEngineAgendaItem
 
 	// TargetEngine agendas are in the range 101-199.  Obtain has a
 	// priority lower than observation but higher than movement.
-	agendaOrder = 125
+	agendaOrder = 130
 
 	isReady = ((configReady() == true) && (atTarget() == true))
 

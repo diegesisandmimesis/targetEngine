@@ -10,7 +10,7 @@
 class ObtainCustom: Obtain
 	syslogID = 'ObtainKey'
 
-	agendaOrder = 126
+	agendaOrder = 135
 
 	matchTarget(actor, obj) {
 		return(matchCustom(actor, obj) != nil);

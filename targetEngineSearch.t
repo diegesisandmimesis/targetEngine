@@ -13,7 +13,7 @@ class Search: TargetEngineAgendaItem
 
 	// TargetEngine agendas are in the range 101-199.  We're after
 	// Observe and Obtain and before the movement-related agendas.
-	agendaOrder = 134
+	agendaOrder = 160
 
 	// Per-turn list of searchable objects in the actor's current context.
 	searchList = nil
