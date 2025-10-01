@@ -179,7 +179,7 @@ modify Actor
 	// the obtain agenda succeeds in obtaining the target or decides
 	// to permanently fail.  In either case we want to clear out the
 	// other agendas we started for this target.
-	_clearFind(t) {
+	_clearFind(t, arg?) {
 		clearExplore(t);
 		clearSearch(t);
 	}
