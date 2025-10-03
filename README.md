@@ -14,10 +14,14 @@ behaviors.
 
 [Agendas](#agendas)
 * [Explore](#explore)
-* [Move](#move)
+* [MoveTo](#move)
 * [Observe](#observe)
 * [Obtain](#obtain)
+* [Open](#open)
+* [ObtainCustom](#obtain-custom)
 * [RandomWalk](#random-walk)
+* [Search](#search)
+* [Unlock](#unlock)
 
 [Examples](#examples)
 
@@ -103,6 +107,10 @@ will be the same except for the extensions (``.t3m`` for makefiles and
 When the ``Explore`` agenda is active the NPC will attempt to visit locations
 it hasn't previously seen.
 
+#### Properties
+
+* ``agendaOrder = 180``
+
 #### Usage
 
 ```
@@ -125,7 +133,7 @@ in ``Direction.allDirections`` and the first one will be selected.
 at the top of the exploration stack will be selected.  The ``Explore``
 agenda will then add the location the selected exit is in (that is, the
 room that contains the exit, not the room the exit leads to) as a target
-for the ``Move`` agenda.  This will cause the NPC to path to that location,
+for the ``MoveTo`` agenda.  This will cause the NPC to path to that location,
 after which processing will automatically resume at the second step above.
 
 This process will be iterate through until there is nothing left in the
@@ -142,7 +150,7 @@ not seen will be added to a the exploration stack.
 * The first (oldest) element of the exploration stack is checked.  If
 the location of the exit it describes is the current locaiton, that exit
 is used.
-* If the current location is different, the ``Move`` agenda is used to
+* If the current location is different, the ``MoveTo`` agenda is used to
 path the NPC to the location of the oldest entry in the stack.
 
 #### Initialization
@@ -165,9 +173,13 @@ be added to the exploration stack
 be repeated unless the flag is cleared.
 
 <a name="move"/></a>
-### Move
+### MoveTo
 
-The ``Move`` agenda paths the NPC to a given location.
+The ``MoveTo`` agenda paths the NPC to a given location.
+
+#### Properties
+
+* ``agendaOrder = 170``
 
 #### Usage
 
@@ -198,6 +210,10 @@ Move to a series of locations.
 The ``Observe`` agenda tells the NPC to examine something when they
 encounter it.
 
+#### Properties
+
+* ``agendaOrder = 110``
+
 #### Usage
 
 ```
@@ -213,6 +229,10 @@ when they encounter it.
 NOTE:  This does not cause the NPC to actively seek out the object in question.
     This by itself will not cause the NPC to move or take any other actions
     other than attempting to take the object when seen.
+
+#### Properties
+
+* ``agendaOrder = 130``
 
 #### Usage
 
@@ -232,6 +252,45 @@ Take several objects.
      alice.obtain(tomato);
 ```
 
+<a name="obtain-custom"/></a>
+### ObtainCustom
+
+The ``ObtainCustom`` agenda is like the ``Custom`` agenda, but the target
+is a test function.  The agenda iterates over all objects in scope, calling
+the test function with each object as its argument.  Objects for which
+the function returns ``true`` will be considered valid targets.
+
+#### Properties
+
+* ``agendaOrder = 135``
+
+#### Usage
+
+With an inline function:
+```
+    // Tell alice to obtain all instances of the Pebble class:
+    alice.obtainCustom({ x: x.ofKind(Pebble) });
+```
+
+<a name="open"/></a>
+### Open
+
+The ``Open`` agenda tells the NPC to attempt to open a given container.
+
+This is used under the hood by the ``Search`` agenda, so you don't have
+to manually invoke the ``Open`` agenda if the NPC is already searching.
+
+#### Properties
+
+* ``agendaOrder = 150``
+
+#### Usage
+
+Basic usage:
+```
+    // Tell alice to open the box
+    alice.open(box);
+```
 
 <a name="random-walk"/></a>
 ### RandomWalk
@@ -239,9 +298,83 @@ Take several objects.
 The ``RandomWalk`` agenda tells the NPC to wander randomly for a set number
 of turns.
 
+#### Properties
+
+* ``agendaOrder = 199``
+
 #### Usage
 
 ```
      // Tell alice to wander aimlessly for 99 turns
      alice.randomWalk(99);
+```
+
+<a name="search"/></a>
+### Search
+
+The ``Search`` agenda tells the NPC to investigate searchable containers.
+
+The takes care of automagically unlocking and opening containers, if possible,
+via the ``Unlock`` and ``Open`` agendas.
+
+#### Properties
+
+* ``agendaOrder = 160``
+
+#### Usage
+
+Basic usage:
+```
+    // Tells alice to start searching.  The argument 'foo' is just an ID
+    // for this search invokation.
+    alice.search('foo');
+```
+
+Multiple concurrent searche
+```
+    // Start one search
+    alice.search('foo');
+
+    // Start a different search
+    alice.search('bar');
+
+    // Stop the first search.
+    alice.clearSearch('foo');
+
+    // Stop the second search
+    alice.clearSearch('bar');
+```
+Having multiple concurrent searches active at once doesn't accomplish anything
+in and of itself.  This usage is just to make it easy to have separate
+tasks request the search behavior without having to keep track of whether or
+not anything else is doing the same thing.
+
+<a name="unlock"/></a>
+### Unlock
+
+The ``Unlock`` agenda tells the NPC to attempt to unlock any locked containers
+it encounters.
+
+The is handled automagically by the ``Search`` agenda, so if you want to
+have an NPC take care of locks by themselves you probably want to use
+``.search()`` instead.
+
+The agenda keeps track of which keys have been attempted on which locks,
+and will only attempt to unlock something if:
+
+* the lock is in the target list
+* the NPC has a key which is plausible for the lock (evaluated using
+``keyIsPlausible()`` on the locked object)
+* the plausible key has not been tried on that lock
+
+#### Properties
+
+* ``agendaOrder = 140``
+
+#### Usage
+
+Basic usage:
+```
+    // Tells alice to try to unlock the box
+    alice.unlock(box)
 ```
