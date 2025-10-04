@@ -11,5 +11,15 @@
 class HuntNear: TargetEngineAgendaItem
 	syslogID = 'HuntNear'
 
-	agendaOrder = 175
+	agendaOrder = 190
+
+	maxDijkstraDistance = 3
+	roomList = nil
+
+	setTarget(v) {
+		if(inherited(v) != true)
+			return(nil);
+
+		return(true);
+	}
 ;
