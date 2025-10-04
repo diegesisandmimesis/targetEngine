@@ -73,6 +73,7 @@ modify Actor
 		a.invokeItem();
 		return(true);
 	}
+	/*
 
 	// Find pseudo-agenda.  Follows the same general semantics as the
 	// other agendas but is just a frontend for several.
@@ -114,4 +115,5 @@ modify Actor
 		clearExplore(t);
 		clearSearch(t);
 	}
+	*/
 ;

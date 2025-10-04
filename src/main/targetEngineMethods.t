@@ -25,20 +25,6 @@ targetEngineMethods(unlock, Unlock, 140)
 targetEngineMethods(open, Open, 150)
 targetEngineMethods(search, Search, 160)
 targetEngineMethods(moveTo, MoveTo, 170)
+targetEngineMethods(huntNear, HuntNear, 175)
 targetEngineMethods(explore, Explore, 180)
 targetEngineMethods(randomWalk, RandomWalk, 199)
-
-
-/*
-modify TargetEngine
-	obtainAgendaClass = Obtain
-	_agendaList = (nilToList(inherited()) + [ Obtain ])
-	obtain(v?, cb?) { return(_setTarget(v, cb, obtainAgendaClass)); }
-	clearObtain(v) { return(_clearTargetObj(v, obtainAgendaClass)); }
-;
-
-modify Actor
-	obtain(v?, cb?) { return(targetEngine ? targetEngine.obtain(v, cb) : nil); }
-	clearObtain(v) { return(targetEngine ? targetEngine.clearObtain(v) : nil); }
-;
-*/
