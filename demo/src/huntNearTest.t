@@ -44,8 +44,8 @@ me: Person;
 pebble: Thing '(small) (round) pebble' 'pebble' "A small, round pebble. ";
 
 AutoTest
-	//autoTestMaxTurns = 1000
-	autoTestMaxTurns = 1
+	autoTestMaxTurns = 1000
+	//autoTestMaxTurns = 1
 
 	autoTestSilent = true
 	autoTestStartGame() {

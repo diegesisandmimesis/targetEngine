@@ -75,24 +75,100 @@ class HuntNear: TargetEngineAgendaItem
 	roomList = nil
 
 	setTarget(v) {
+		local t;
+
+		// Make sure our target is a room.
 		if(!isTargetEngineTarget(v) || !isRoom(v.target))
 			return(nil);
+
+		// If the base target-setting logic fails, give up.
 		if(inherited(v) != true)
 			return(nil);
 
-		roomList = v.target.getDijkstraNeighborhood(maxDijkstraDistance,
-			getActor());
+		t = libGlobal.totalTurns;
 
-		/*
-		aioSay('\nroomList for <<v.target.roomName>>:\n ');
-		roomList.forEach(function(x) {
-			aioSay('\n\t<<x.roomName>>\n ');
-			x.exitList(getActor()).forEach(function(y) {
-				aioSay('\n\t\t<<y.dest_.roomName>>\n ');
-			});
-		});
-		*/
+		v.target.getDijkstraNeighborhood(maxDijkstraDistance,
+			getActor()).forEach({ x: updateRoomList(x, t) });
 
 		return(true);
+	}
+
+	updateRoomList(rm, t) {
+		if(roomList == nil)
+			roomList = new LookupTable();
+		roomList[rm] = t;
+	}
+
+	checkProgress() {
+		if(targetCount() == 0) {
+			clearConfig();
+			return(true);
+		}
+		if(checkRoomList()) {
+			return(nil);
+		}
+
+		clearConfig();
+
+		return(true);
+	}
+
+	// See if we have any rooms left on the list.
+	checkRoomList() {
+		local a, m, r;
+
+		if(roomList == nil)
+			return(nil);
+
+		a = getActor();
+
+		// List of rooms we've seen since adding them to the list.
+		r = new Vector();
+
+		roomList.forEachAssoc(function(k, v) {
+			// If we have no memory of the room, we still haven't
+			// been there.
+			if((m = a.getMemory(k)) == nil)
+				return;
+
+			// If we've seen the room since it was added to the
+			// list we can remove it from the list.
+			if(m.lastSeenTurn() > v)
+				r.append(k);
+		});
+
+		// Remove all the rooms we've seen since they were added.
+		r.forEach({ x: roomList.removeElement(x) });
+
+		// See if we have any rooms left.
+		return(roomList.keysToList().length > 0);
+	}
+
+	takeAction() {
+		local a, l;
+
+		// Should never happen.
+		if(roomList == nil)
+			return;
+
+		l = roomList.keysToList();
+		if(l.length < 1)
+			return;
+
+		a = getActor();
+
+		// Remove the first element on the list.
+		roomList.removeElement(l[1]);
+
+		// ...have the actor try to move to it.
+		a.moveTo(l[1]);
+
+		// ...and ping the move agenda.  We do this because all
+		// we (this agenda) is doing is thinking, and if we're
+		// here then the agendaOrder for the move agenda is already
+		// past, so we manually invoke it to prevent the NPC
+		// wasting a turn twiddling their thumbs thinking about
+		// where to go next.
+		a.invokeAgendaMatching(MoveTo);
 	}
 ;
