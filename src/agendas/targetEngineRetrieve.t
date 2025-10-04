@@ -9,21 +9,22 @@
 #include "targetEngine.h"
 
 modify TargetEngine
-	retrieveDst = nil
+	retrieveTarget = nil
 
-	addRetrieveDst(t, rm) {
-		if(retrieveDst == nil)
-			retrieveDst = new LookupTable();
-		retrieveDst[t] = rm;
+	addRetrieveTarget(t, rm) {
+		if(retrieveTarget == nil)
+			retrieveTarget = new LookupTable();
+		retrieveTarget[t] = rm;
 		return(true);
 	}
 
-	getRetrieveDst(t) { return(retrieveDst ? retrieveDst[t] : nil); }
+	getRetrieveTarget(t)
+		{ return(retrieveTarget ? retrieveTarget[t] : nil); }
 
-	clearRetrieveDst(t) {
-		if(retrieveDst == nil)
+	clearRetrieveTarget(t) {
+		if(retrieveTarget == nil)
 			return(nil);
-		retrieveDst[t] == nil;
+		retrieveTarget[t] == nil;
 		return(true);
 	}
 ;
@@ -55,6 +56,8 @@ modify Actor
 		// when we start and when we're cleared.
 		targetEngine.addRetrieveTarget(t, m.room);
 		huntNear(m.room);
+
+		return(true);
 	}
 
 	clearRetrieve(t) {

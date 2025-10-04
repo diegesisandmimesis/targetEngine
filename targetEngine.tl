@@ -15,6 +15,8 @@ source: src/agendas/targetEngineSearch.t
 source: src/agendas/targetEngineMoveTo.t
 source: src/agendas/targetEngineFind.t
 source: src/agendas/targetEngineExplore.t
+source: src/agendas/targetEngineRetrieve.t
+source: src/agendas/targetEngineHuntNear.t
 source: src/agendas/targetEngineRandomWalk.t
 source: src/agendas/targetEngineInterrogate.t
 source: src/main/targetEngineMethods.t
