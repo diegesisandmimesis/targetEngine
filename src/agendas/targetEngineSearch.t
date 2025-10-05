@@ -33,12 +33,20 @@ class Search: TargetEngineAgendaItem
 
 	isSearchable(obj) {
 		// Openable but closed containers are search targets.
-		if(obj.ofKind(OpenableContainer) && !obj.isOpen()) {
+		if(obj.ofKind(OpenableContainer) && !obj.isOpen()
+			&& !onFailedList(obj))
 			return(true);
-		}
 
 		// Default:  nope.
 		return(nil);
+	}
+
+	onFailedList(obj) {
+		local ag;
+
+		if((ag = getActor().getAgendaMatching(Open)) == nil)
+			return(nil);
+		return(ag.onFailedList(obj));
 	}
 
 	takeAction() {

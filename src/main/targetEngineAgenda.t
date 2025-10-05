@@ -34,7 +34,7 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		if(targetList == nil)
 			targetList = new Vector();
 
-		if(targetList.valWhich({ x:  v.target == x.target }) != nil)
+		if(targetList.valWhich({ x: v.target == x.target }) != nil)
 			return(nil);
 
 		targetList.append(v);
@@ -128,8 +128,12 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 
 	// Matches a specific, individual object in the actor's location.
 	_matchTargetExact(actor, obj) {
+		return(obj.target
+			&& (filterScopeList({ x: x == obj.target }).length > 0));
+		/*
 		return(obj.target && ((obj.target.location == actor.location)
 			|| (obj.target == actor.location)));
+			*/
 	}
 
 	// Returns a vector of all targets at the actor's location.

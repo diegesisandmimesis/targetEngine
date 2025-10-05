@@ -161,17 +161,19 @@ class TargetEngine: TargetEngineObject
 	// officially need a nil for the second argument if there's
 	// no callback.
 	_setTarget(v, cb, cls) {
-		local a, obj;
+		local a, obj, r;
 
-		_debug('setting new target');
 		if((a = _getAgendaMatching(cls)) == nil)
 			return(nil);
 
 		obj = new TargetEngineTarget(v, cb);
 		obj.targetEngine = self;
-		a.setTarget(obj);
 
-		return(true);
+		r = a.setTarget(obj);
+
+		if(r == true)
+			_debug('setting new target (<<a.syslogID>>)');
+		return(r);
 	}
 
 	_clearTargetObj(v, cls) {

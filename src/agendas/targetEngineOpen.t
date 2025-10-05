@@ -9,7 +9,7 @@
 #include "targetEngine.h"
 
 class Open: TargetEngineAgendaItem
-	syslogID = 'Unlock'
+	syslogID = 'Open'
 
 	agendaOrder = 150
 
@@ -114,4 +114,7 @@ class Open: TargetEngineAgendaItem
 			return(nil);
 		return(failedList.valWhich({ x: x == obj }) != nil);
 	}
+
+	// Returns the containers we've tried and failed to open.
+	getFailedList() { return(failedList ? failedList : []); }
 ;
