@@ -59,6 +59,16 @@
 #error "dataTypes should be in /home/user/tads/dataTypes ."
 #endif // DATA_TYPES_H
 
+#include "memoryEngine.h"
+#ifndef MEMORY_ENGINE_H
+#error "This module requires the memoryEngine module."
+#error "https://github.com/diegesisandmimesis/memoryEngine"
+#error "It should be in the same parent directory as this module.  So if"
+#error "targetEngine is in /home/user/tads/targetEngine, then"
+#error "memoryEngine should be in /home/user/tads/memoryEngine ."
+#endif // MEMORY_ENGINE_H
+
+
 #define isUnvisitedExit(obj) isType(obj, UnvisitedExit)
 #define isTargetEngineAgenda(obj) isType(obj, TargetEngineAgenda)
 #define isTargetEngineTarget(obj) isType(obj, TargetEngineTarget)

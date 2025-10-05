@@ -78,12 +78,20 @@ class Explore: TargetEngineAgendaItem
 		// If we still have no unexplored exits to check, we have
 		// nothing to do.  Clear the config, we're done.
 		if((_unexploredStack == nil) || (_unexploredStack.length < 1)) {
+			notifyExplored();
 			clearConfig();
 			return(true);
 		}
 
 		// Returning nil means "we're not done".
 		return(nil);
+	}
+
+	notifyExplored([args]) {
+		if(targetList == nil)
+			return;
+
+		targetList.forEach({ x: x.callback(args...) });
 	}
 
 	// Remember all the unexplored exits from the current locaiton.
