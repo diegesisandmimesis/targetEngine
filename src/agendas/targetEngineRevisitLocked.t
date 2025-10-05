@@ -8,11 +8,22 @@
 
 #include "targetEngine.h"
 
+// Data structure for holding information about a revisit target.
+class RevisitLockedTarget: object
+	obj = nil
+	room = nil
+	construct(v0?, v1?) {
+		if(isThing(v0)) obj = v0;
+		if(isRoom(v1)) room = v1;
+	}
+;
+
 class RevisitLocked: TargetEngineAgendaItem
 	syslogID = 'RevisitLocked'
 
 	agendaOrder = 195
 
+	// Updated every turn, a list of containers we want to re-check.
 	checkableContainers = nil
 
 	configReady() {
@@ -28,6 +39,9 @@ class RevisitLocked: TargetEngineAgendaItem
 		return(true);
 	}
 
+	// Returns the list of containers that the Open agenda failed to
+	// open, that we are carrying a plausible key for that we haven't
+	// tried yet.
 	getCheckableContainers() {
 		local a, agO, agU, l0, l1;
 
@@ -35,6 +49,7 @@ class RevisitLocked: TargetEngineAgendaItem
 		if(checkableContainers != nil)
 			return(checkableContainers);
 
+		// We need a memory engine on our actor.
 		a = getActor();
 		if(a.memoryEngine == nil)
 			return([]);
@@ -57,7 +72,6 @@ class RevisitLocked: TargetEngineAgendaItem
 			if(agU.getUntriedKeyFor(x) == nil)
 				return;
 
-		aioSay('\nadding <<toString(x)>>\n ');
 			// ...and if so, at it to our list.
 			l0.append(x);
 		});
@@ -79,7 +93,7 @@ class RevisitLocked: TargetEngineAgendaItem
 				return;
 
 			// Add the container and remembered location to list.
-			l1.append([ x, m.room ]);
+			l1.append(new RevisitLockedTarget(x, m.room));
 		});
 
 		// Cache the results.
@@ -92,10 +106,12 @@ class RevisitLocked: TargetEngineAgendaItem
 	takeAction() {
 		local l;
 
+		// Should never fail.
 		l = getCheckableContainers();
 		if(!isCollection(l) || (l.length < 1))
 			return;
 
-		getActor().moveTo(l[1][2]);
+		// Grab the first container on the list, move to it.
+		getActor().moveTo(l[1].room);
 	}
 ;
