@@ -101,8 +101,11 @@ class TargetEngineAgendaItem: AgendaItem, TargetEngineObject
 		lst = lst.subset({ x: x != a });
 
 		// Exclude anything we're carrying.
-		lst = lst.subset(
-			{ x: a.contents.valWhich({ y: y == x }) == nil });
+		lst = lst.subset({ x: x.getCarryingActor() != a });
+			//{ x: a.contents.valWhich({ y: y == x }) == nil });
+
+		// Exclude things other actors are carrying.
+		lst = lst.subset({ x: x.getCarryingActor() == nil });
 
 		if(isFunction(fn))
 			lst = lst.subset(fn);

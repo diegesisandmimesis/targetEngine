@@ -14,12 +14,14 @@ behaviors.
 
 [Agendas](#agendas)
 * [Explore](#explore)
+* [HuntNear)(#hunt-near)
 * [MoveTo](#move)
 * [Observe](#observe)
 * [Obtain](#obtain)
 * [Open](#open)
 * [ObtainCustom](#obtain-custom)
 * [RandomWalk](#random-walk)
+* [Retrieve](#retrieve)
 * [Search](#search)
 * [Unlock](#unlock)
 
@@ -172,6 +174,32 @@ be added to the exploration stack
 * A flag will then be set indicating this has been done.  The process will not
 be repeated unless the flag is cleared.
 
+<a name="hunt-near"/></a>
+### HuntNear
+
+The ``HuntNear`` agenda tells the NPC to visit all locations within a certain
+number of moves of a target location.
+
+#### Properties
+
+* ``maxDijkstraDistance = 2``
+
+  The distance from the target location that will be searched.  Zero is
+  just the target location itself, ``1`` is all locations adjacent to the
+  target location, and so on.
+
+  Default is ``2``.
+
+#### Usage
+
+Basic usage
+
+```
+    // Tells alice go to the storageCloset location and
+    // re-explore everything within 2 steps of it
+    alice.huntNear(storageCloset);
+```
+
 <a name="move"/></a>
 ### MoveTo
 
@@ -307,6 +335,23 @@ of turns.
 ```
      // Tell alice to wander aimlessly for 99 turns
      alice.randomWalk(99);
+```
+
+<a name="retrieve"/></a>
+### Retrieve
+
+The ``Retrieve`` agenda tells the NPC to attempt to re-visit the locaiton of
+an object they've previously seen.  If it isn't in that location ``Retrieve``
+will automatically use the ``HuntNear`` agenda to explore the surrounding
+area.
+
+#### Usage
+
+Basic usage:
+```
+    // Tell alice to go back to where she saw the pebble
+    // and search the nearby area if it's not there
+    alice.retrieve(pebble);
 ```
 
 <a name="search"/></a>
